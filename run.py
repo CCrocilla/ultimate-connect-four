@@ -1,3 +1,16 @@
-# Your code goes here.
-# You can delete these comments, but do not change the name of this file
-# Write your code to expect a terminal of 80 characters wide and 24 rows high
+import random
+import termcolor
+
+
+def welcome_message():
+    """
+    Display the ASCII Logo
+    """
+    logo = open("assets/logo.txt")
+    print(logo.read())
+    logo.close()
+
+
+welcome_message()
+
+
