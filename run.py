@@ -23,7 +23,7 @@ def pause():
     """
     Pause until the user press Enter
     """
-    pause_programm = input("Press the [ENTER] key to go to Home Menu...")
+    pause_program = input("Press the [ENTER] key to return Home...")
 
 
 def clear_console():
@@ -38,14 +38,14 @@ def clear_console():
     
 def instruction():
     """
-    Display the Instructions
+    Display the ASCII Instruction Logo and the Instructions
     """
     instruction_logo = open("assets/files/instructions-logo.txt")
     cprint(instruction_logo.read(), "red")
     instruction_logo.close()
     cprint("                   Instructions\n", "red")
     instruction_rules = open("assets/files/instructions-rules.txt")
-    cprint(instruction_rules.read(), "red")
+    cprint(instruction_rules.read())
     instruction_rules.close()
     pause()
     clear_console()
@@ -53,9 +53,42 @@ def instruction():
 
 
 def create_board():
+    """
+    Create and display the Board Game
+    """
     print("Board")
+    for row in range(BOARD_ROW):
+        print("---------------------------------------------")
+        for col in range(BOARD_COL):
+            print(col, "|   ", end="")
+    print("")
     exit()
       
+
+def select_mode_and_username():
+    """
+    Request to the user the mode(Single Player or Multiplayer)
+    and ask for the Usernames
+    """
+    print("Are you ready for the Ultimate Connect 4 Battle?\n")
+    select_mode = input("How many player?\n")
+    if select_mode == "1":
+        print("Wrong choise! This option is not available yet!\n")
+        select_mode_and_username()
+    elif select_mode == "2":
+        player_1 = input("Player 1 how can I call you?\n")
+        print(f"Hi {player_1}!\n")
+        
+        player_2 = input("Player 2 what's your name?\n")
+        print(f"Hi {player_2}!\n")
+        
+        print("Great! Are you ready?! Let me prepare the Board!")
+        print("")
+        create_board()
+    else:
+        print("This is not a valid option. Please try again!\n")
+        select_mode_and_username()
+    
     
 def start_game():
     """
@@ -65,7 +98,7 @@ def start_game():
     cprint("               Welcome to Connect 4\n", "red")
     selection = input("Do you want to [P]lay or read the [I]nstructions?\n").lower()
     if selection == "p":
-        create_board()
+        select_mode_and_username()
     elif selection == "i":
         clear_console()
         instruction()
@@ -75,6 +108,9 @@ def start_game():
         
 
 def main():
+    """
+    Start all initial programs
+    """
     logo()
     start_game()
 
