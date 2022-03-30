@@ -1,6 +1,7 @@
 import os
 import random
 import numpy as np
+from pprint import pprint 
 from termcolor import cprint
 
 
@@ -8,6 +9,15 @@ BOARD_ROW = 6
 BOARD_COL = 7
 player_1 = ""
 player_2 = ""
+board = np.array([
+    ["", "", "", "", "", "", ""],
+    ["", "", "", "", "", "", ""],
+    ["", "", "", "", "", "", ""],
+    ["", "", "", "", "", "", ""],
+    ["", "", "", "", "", "", ""],
+    ["", "", "", "", "", "", ""],
+    ["", "", "", "", "", "", ""],
+])
 
 
 def logo():
@@ -58,12 +68,26 @@ def create_board():
     """
     print("Board")
     for row in range(BOARD_ROW):
-        print("---------------------------------------------")
+        cprint("\n-------------------------------------", "blue")
         for col in range(BOARD_COL):
-            print(col, "|   ", end="")
+            cell = board[row][col]
+            if cell == "":
+                cell = " "
+            #print(f"| {row} - {col}" , end="")
+            cprint(f"|  {cell}  ", "blue", end="")                
+    cprint("\n-------------------------------------", "blue")
     print("")
-    exit()
-      
+
+
+def insert_move_player(row, col):
+    """
+    Function to insert value in the Matrix!
+    """
+    clear_console()
+    x = "X"
+    board[row][col] = x
+    create_board()
+
 
 def select_mode_and_username():
     """
@@ -84,7 +108,7 @@ def select_mode_and_username():
         
         print("Great! Are you ready?! Let me prepare the Board!")
         print("")
-        create_board()
+        insert_move_player(1, 2)
     else:
         print("This is not a valid option. Please try again!\n")
         select_mode_and_username()
