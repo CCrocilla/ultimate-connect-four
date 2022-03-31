@@ -7,6 +7,7 @@ from termcolor import cprint
 
 BOARD_ROW = 6
 BOARD_COL = 7
+player = 0
 player_1 = ""
 player_2 = ""
 board = np.array([
@@ -67,25 +68,44 @@ def create_board():
     Create and display the Board Game
     """
     print("Board")
+    #clear_console()
     for row in range(BOARD_ROW):
-        cprint("\n-------------------------------------", "blue")
+        cprint("\n-------------------------------------------", "blue")
         for col in range(BOARD_COL):
             cell = board[row][col]
             if cell == "":
-                cell = " "
+                cell = "  "
             #print(f"| {row} - {col}" , end="")
             cprint(f"|  {cell}  ", "blue", end="")                
-    cprint("\n-------------------------------------", "blue")
+    cprint("\n-------------------------------------------", "blue")
+    cprint("\n    0      1      3      4      5      6", "blue")
     print("")
+    pause()
+    player_turn(player)
 
+
+def player_turn(player):
+    while (player % 2) == 0:
+        cpu_choice_row = random.randint(0, 6)
+        cpu_choice_col = random.randint(0, 5)
+        print(cpu_choice_row, cpu_choice_col)
+        player += 1
+        insert_move_player(cpu_choice_row, cpu_choice_col) 
+        
 
 def insert_move_player(row, col):
     """
     Function to insert value in the Matrix!
     """
-    clear_console()
-    x = "X"
-    board[row][col] = x
+    #x = "🟡"
+    #board[row][col] = x
+    #x = input("Enter a value from 0 to 6:\n")
+    #if x == 0:
+    y = "🟡"
+    board[row][col] = y
+    #elif x == 1:
+    #    y = "🟡"
+    #    board[row][col] = y
     create_board()
 
 
@@ -108,7 +128,7 @@ def select_mode_and_username():
         
         print("Great! Are you ready?! Let me prepare the Board!")
         print("")
-        insert_move_player(1, 2)
+        insert_move_player(5, 1)
     else:
         print("This is not a valid option. Please try again!\n")
         select_mode_and_username()
@@ -135,6 +155,7 @@ def main():
     """
     Start all initial programs
     """
+    create_board()
     logo()
     start_game()
 
