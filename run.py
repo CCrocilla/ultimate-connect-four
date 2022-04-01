@@ -7,9 +7,8 @@ from termcolor import cprint
 
 BOARD_ROW = 6
 BOARD_COL = 7
-player = 0
-player_1 = ""
-player_2 = ""
+player_one_name = ""
+player_two_name = ""
 board = np.array([
     ["", "", "", "", "", "", ""],
     ["", "", "", "", "", "", ""],
@@ -19,6 +18,7 @@ board = np.array([
     ["", "", "", "", "", "", ""],
     ["", "", "", "", "", "", ""],
 ])
+
 
 
 def logo():
@@ -34,7 +34,7 @@ def pause():
     """
     Pause until the user press Enter
     """
-    pause_program = input("Press the [ENTER] key to return Home...")
+    input("Press the [ENTER] key to return Home...\n")
 
 
 def clear_console():
@@ -67,46 +67,94 @@ def create_board():
     """
     Create and display the Board Game
     """
-    print("Board")
-    #clear_console()
+    player = 0
     for row in range(BOARD_ROW):
         cprint("\n-------------------------------------------", "blue")
         for col in range(BOARD_COL):
             cell = board[row][col]
             if cell == "":
                 cell = "  "
-            #print(f"| {row} - {col}" , end="")
             cprint(f"|  {cell}  ", "blue", end="")                
     cprint("\n-------------------------------------------", "blue")
-    cprint("\n    0      1      3      4      5      6", "blue")
+    cprint("\n    0      1      2      3      4      5", "blue")
     print("")
-    pause()
-    player_turn(player)
-
-
-def player_turn(player):
-    while (player % 2) == 0:
-        cpu_choice_row = random.randint(0, 6)
-        cpu_choice_col = random.randint(0, 5)
-        print(cpu_choice_row, cpu_choice_col)
+    if (player % 2) == 0:
         player += 1
-        insert_move_player(cpu_choice_row, cpu_choice_col) 
-        
+        player_one_turn()
+    else:
+        player += 1
+        player_two_turn()
+    
+    
+def cpu_turn():
+    chip = "🔴"
+    cpu_choice_row = random.randint(0, 6)
+    cpu_choice_col = random.randint(0, 5)
+    print(cpu_choice_row, cpu_choice_col)
+    insert_value_matrix(cpu_choice_row, cpu_choice_col, chip) 
+       
 
-def insert_move_player(row, col):
+def player_one_turn():
+    row_to_insert = -1
+    input_player_one = int(input("Player 1 it is your turn! Pick a column from 0 to 5: "))
+    print(f"Player have entered the chip in column: {input_player_one}")
+    for row in range(BOARD_ROW):
+        print(row)
+        if input_player_one != "" and input_player_one >= 0 and input_player_one <= 5:
+            cell = board[row][input_player_one]
+            if cell == "":
+                row_to_insert = row
+                break
+        else:
+            print("The column number entered is not valid. Please try again!")
+            player_one_turn()
+    chip = "🟡"
+    if row_to_insert != -1:
+        insert_value_matrix(row_to_insert, input_player_one, chip)
+    else:
+        print("Sorry but the column is full! Please pick a new one!")
+        player_one_turn()
+
+
+def player_two_turn():
+    row_to_insert = -1
+    input_player_two = int(input("Player 2 it is your turn! Pick a column from 0 to 5: "))
+    print(f"Player have entered the chip in column: {input_player_two}")
+    for row in range(BOARD_ROW):
+        print(row)
+        if input_player_two != "" and input_player_two >= 0 and input_player_two <= 5:
+            cell = board[row][input_player_two]
+            if cell == "":
+                row_to_insert = row
+                break
+        else:
+            print("The column number entered is not valid. Please try again!")
+            player_two_turn()
+    chip = "🔴"
+    if row_to_insert != -1:
+        insert_value_matrix(row_to_insert, input_player_two, chip)
+    else:
+        print("Sorry but the column is full! Please pick a new one!")
+        player_two_turn()
+
+
+def insert_value_matrix(row, col, chip):
     """
     Function to insert value in the Matrix!
     """
-    #x = "🟡"
-    #board[row][col] = x
-    #x = input("Enter a value from 0 to 6:\n")
-    #if x == 0:
-    y = "🟡"
-    board[row][col] = y
-    #elif x == 1:
-    #    y = "🟡"
-    #    board[row][col] = y
-    create_board()
+    player_turn = 0
+    if (player_turn % 2) != 1:
+        player_turn += 1
+        chip = "🟡"
+        print(f"Here the chip {chip}")
+        board[row][col] = chip
+        create_board()
+    else:
+        player_turn += 1
+        chip = "🔴"
+        print(f"Here the chip {chip}")
+        board[row][col] = chip
+        create_board()
 
 
 def select_mode_and_username():
@@ -117,20 +165,20 @@ def select_mode_and_username():
     print("Are you ready for the Ultimate Connect 4 Battle?\n")
     select_mode = input("How many player?\n")
     if select_mode == "1":
-        print("Wrong choise! This option is not available yet!\n")
+        print("Wrong choise! This option is not available yet! Try again! \n")
         select_mode_and_username()
     elif select_mode == "2":
-        player_1 = input("Player 1 how can I call you?\n")
-        print(f"Hi {player_1}!\n")
+        player_one_name = input("Player 1 what's your name?\n")
+        print(f"Hi {player_one_name}!\n")
         
-        player_2 = input("Player 2 what's your name?\n")
-        print(f"Hi {player_2}!\n")
+        player_two_name = input("Player 2 what's your name?\n")
+        print(f"Hi {player_two_name}!\n")
         
         print("Great! Are you ready?! Let me prepare the Board!")
         print("")
-        insert_move_player(5, 1)
+        insert_value_matrix(0, 0, "")
     else:
-        print("This is not a valid option. Please try again!\n")
+        print("This is not a valid option. The available option are: 1 or 2! Please try again!\n")
         select_mode_and_username()
     
     
@@ -155,7 +203,6 @@ def main():
     """
     Start all initial programs
     """
-    create_board()
     logo()
     start_game()
 
