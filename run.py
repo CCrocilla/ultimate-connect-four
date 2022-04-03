@@ -15,7 +15,6 @@ board = np.array([
     ["", "", "", "", "", "", ""],
     ["", "", "", "", "", "", ""],
     ["", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", ""],
 ])
 
 
@@ -81,19 +80,18 @@ def render_board():
     Create and display the Board Game
     """
     for row in range(BOARD_ROW):
-        cprint("\n-------------------------------------------", "blue")
+        cprint("\n--------------------------------------------------------", "blue")
         for col in range(BOARD_COL):
             cell = board[row][col]
             if cell == "":
                 cell = "  "
-            cprint(f"|  {cell}  ", "blue", end="")                
-    cprint("\n-------------------------------------------", "blue")
-    cprint("\n    0      1      2      3      4      5", "blue")
-    print("")
+            cprint(f"|  {cell}  |", "blue", end="")                
+    cprint("\n--------------------------------------------------------", "blue")
+    cprint("\n    0       1       2       3       4       5      6\n", "blue")
 
 
 def get_input_cpu():
-    cpu_choice_col = random.randint(0, 5)
+    cpu_choice_col = random.randint(0, 6)
     return cpu_choice_col
 
 
@@ -111,11 +109,14 @@ def players_turn(next_turn):
         cprint("Error: This genre is not available. Please restart the game!")
         exit()
     
-    if input_player != "" and input_player >= 0 and input_player <= 5:
+    if input_player != "" and input_player >= 0 and input_player <= 6:
         row_to_insert = get_row_insert(input_player)
+        check_if_board_full()
+        print(check_if_board_full())
     else:
         print("The column number entered is not valid. Please try again!")
         players_turn(next_turn)
+        
     if row_to_insert != -1:
         insert_value_matrix(row_to_insert, input_player, coin)
         move_forward(next_turn)
@@ -139,8 +140,36 @@ def insert_value_matrix(row, col, coin):
     Function to insert value in the Matrix!
     """
     board[row][col] = coin
-      
     
+      
+#TO DO: CHECKS
+def check_game_over():
+    game_over = False
+    while game_over != True:
+        check_if_board_full()
+        
+
+def check_if_board_full():
+    """Check all the string in the array"""
+    #if "" in board[:1]:
+    if any("" in element for element in board):
+        cprint("The board is NOT full", "green")
+        cprint(board, "green")
+        return True
+    else:
+        cprint("The Board is full", "red")
+        cprint(board, "red")
+        return False
+
+
+"""
+def check_for_winner():
+    Horizontal 
+    Vertical 
+    Diagonal
+"""
+
+
 def move_forward(prev_turn):
     next_turn = 0
     if prev_turn == 1:
