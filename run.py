@@ -27,10 +27,10 @@ class Player:
 
     def input_info(self):
         self.name = input(f"Player {self.turn} what's your name?\n")
-        print(f"Hi {self.name}!\n")
+        cprint(f"\nHi {self.name}! Welcome in Ultimate Connect 4!", "cyan")
 
     def print_info(self):
-        print(f"Hi {self.name} your turn is: {self.turn} and your coin will be {self.coin}!")
+        print(f"\n{self.name} your turn is: {self.turn} and your coin will be {self.coin}!\n")
 
 
 def logo():
@@ -59,6 +59,18 @@ def clear_console():
     os.system(command)
 
 
+def reset_game():
+    pause()
+    clear_console()
+    #TODO: Add reset board. For or Delete Numpy.
+    reset_board()
+    main()
+
+
+def reset_board():
+    np.delete(board, [0,0], axis = 0)
+
+
 def instruction():
     """
     Display the ASCII Instruction Logo and the Instructions
@@ -70,9 +82,7 @@ def instruction():
     instruction_rules = open("assets/files/instructions-rules.txt")
     cprint(instruction_rules.read())
     instruction_rules.close()
-    pause()
-    clear_console()
-    main()
+    reset_game()
 
 
 def render_board():
@@ -87,19 +97,22 @@ def render_board():
                 cell = "  "
             cprint(f"|  {cell}  |", "blue", end="")                
     cprint("\n--------------------------------------------------------", "blue")
-    cprint("\n    0       1       2       3       4       5      6\n", "blue")
+    cprint("\n    0       1       2       3       4       5       6\n", "blue")
 
 
+#TODO: For CPU Check which Columns are available
 def get_input_cpu():
+    """ Function to get the cpu random input """
     cpu_choice_col = random.randint(0, 6)
     return cpu_choice_col
 
 
 def players_turn(next_turn):
+    """ Function to pick insert users/cpu. Check Game Over/Winner """
     coin = players[next_turn-1].coin
     name = players[next_turn-1].name
     genre = players[next_turn-1].genre
-    row_to_insert = -1
+    coin_row_to_insert = -1
     input_player = -1
     if genre == "human":
         input_player = int(input(f"{name} it's your turn! Pick a column from 0 to 5: \n"))
@@ -110,22 +123,28 @@ def players_turn(next_turn):
         exit()
     
     if input_player != "" and input_player >= 0 and input_player <= 6:
-        row_to_insert = get_row_insert(input_player)
-        check_if_board_full()
-        print(check_if_board_full())
+        coin_row_to_insert = get_row_insert(input_player)
     else:
         print("The column number entered is not valid. Please try again!")
         players_turn(next_turn)
         
-    if row_to_insert != -1:
-        insert_value_matrix(row_to_insert, input_player, coin)
-        move_forward(next_turn)
+    if coin_row_to_insert != -1:
+        insert_value_matrix(coin_row_to_insert, input_player, coin)
+        if check_game_over():
+            render_board()
+            reset_game()
+        elif check_for_winner(next_turn, name, coin):
+            render_board()
+            reset_game()   
+        else:
+            move_forward(next_turn)
     else:
         print("Sorry but the column is full! Please pick a new one!")
         players_turn(next_turn)
 
 
 def get_row_insert(input_player):
+    """ Function to realize the gravity for the Coins """
     row_ins = -1
     for row in range(BOARD_ROW):
         cell = board[BOARD_ROW - row -1][input_player]
@@ -142,32 +161,43 @@ def insert_value_matrix(row, col, coin):
     board[row][col] = coin
     
       
-#TO DO: CHECKS
+#TODO: Checks End Game
 def check_game_over():
     game_over = False
-    while game_over != True:
-        check_if_board_full()
-        
+    game_over = check_if_board_full()
+    #TODO: Check for winner 
+    return game_over
+
 
 def check_if_board_full():
-    """Check all the string in the array"""
-    #if "" in board[:1]:
+    """ Check all the string in the array """
     if any("" in element for element in board):
-        cprint("The board is NOT full", "green")
-        cprint(board, "green")
-        return True
-    else:
-        cprint("The Board is full", "red")
-        cprint(board, "red")
         return False
+    else:
+        cprint("Game Over! The Board is full! This is a tie!", "red")
+        return True
 
 
-"""
-def check_for_winner():
-    Horizontal 
-    Vertical 
-    Diagonal
-"""
+def check_for_winner(next_turn, name, coin):
+    """Horizontal/Vertical/Diagonal"""
+    #coin = players[next_turn-1].coin
+    #name = players[next_turn-1].name
+    #for row in range(BOARD_ROW):
+    #    for col in range(BOARD_COL):
+    #        if board[row][col] == "🟡":
+    #            coin += 1
+    #            print("this is the value of the yellow coin:", coin) 
+    for col in range(4):
+        for row in range(BOARD_ROW):
+            if board[row][col] == coin and board[row][col+1] == coin and board[row][col+2] == coin and board[row][col+3] == coin:
+                cprint(f"{name} you are the WINNER!!!", "yellow")
+                return True
+
+
+def check_for_winner_diagonal():
+    board = np.arange(42).reshape((6,7))
+    np.diag(np.diag(board))
+    print(board)
 
 
 def move_forward(prev_turn):
