@@ -1,7 +1,7 @@
+""" Import """
 import os
 import random
 import numpy as np
-from pprint import pprint 
 from termcolor import cprint
 
 
@@ -19,6 +19,9 @@ board = np.array([
 
 
 class Player:
+    """
+    Class Player for the management of the Players information.
+    """
     def __init__(self, name, turn, coin, genre):
         self.name = name
         self.turn = turn
@@ -26,20 +29,23 @@ class Player:
         self.genre = genre
 
     def input_info(self):
+        """ Request name to the user(s) """
         self.name = input(f"Player {self.turn} what's your name?\n")
         cprint(f"\nHi {self.name}! Welcome in Ultimate Connect 4!", "cyan")
 
     def print_info(self):
-        print(f"\n{self.name} your turn is: {self.turn} and your coin will be {self.coin}!\n")
+        """ Display Information to the user about turn and coin """
+        print(
+            f"\n{self.name} your turn is: {self.turn} and your coin will be {self.coin}!\n")
 
 
-def logo():
+def display_logo():
     """
     Display the ASCII Logo
     """
-    logo = open("assets/files/logo.txt")
-    cprint(logo.read(), "red")
-    logo.close()
+    with open("assets/files/logo.txt", encoding="utf-8") as logo:
+        main_menu = logo.read()
+        cprint(main_menu, "red")
 
 
 def pause():
@@ -50,38 +56,36 @@ def pause():
 
 
 def clear_console():
-    """ 
-    Clear the Console Terminal
-    """
+    """ Clear the Console Terminal """
     command = 'clear'
-    if os.name in ('nt', 'dos'):  # If Machine is running on Windows, use cls
+    if os.name in ('nt', 'dos'):  # "cls" if is running on Windows
         command = 'cls'
     os.system(command)
 
 
 def reset_game():
+    """ Reset the game and bring the user to the Main menu """
     pause()
     clear_console()
-    #TODO: Add reset board. For or Delete Numpy.
-    reset_board()
+    # TO DO: Fix reset board. For or Delete Numpy.
+    #reset_board()
     main()
 
 
 def reset_board():
-    np.delete(board, [0,0], axis = 0)
+    """ Function to reset the board """
+    new_board = np.delete(board)
+    board = new_board
 
 
 def instruction():
-    """
-    Display the ASCII Instruction Logo and the Instructions
-    """
-    instruction_logo = open("assets/files/instructions-logo.txt")
-    cprint(instruction_logo.read(), "red")
-    instruction_logo.close()
-    cprint("                   Instructions\n", "red")
-    instruction_rules = open("assets/files/instructions-rules.txt")
-    cprint(instruction_rules.read())
-    instruction_rules.close()
+    """ Display the ASCII Instruction Logo and the Instructions """
+    logo = "assets/files/instructions-logo.txt"
+    rules = "assets/files/instructions-rules.txt"
+    with open(logo, encoding="utf8") as logo, open(rules, encoding="UTF-8") as rules:
+        cprint(logo.read(), "red")
+        cprint("\t\t\tInstructions\n", "red")
+        cprint(rules.read())
     reset_game()
 
 
@@ -95,12 +99,12 @@ def render_board():
             cell = board[row][col]
             if cell == "":
                 cell = "  "
-            cprint(f"|  {cell}  |", "blue", end="")                
+            cprint(f"|  {cell}  |", "blue", end="")
     cprint("\n--------------------------------------------------------", "blue")
     cprint("\n    0       1       2       3       4       5       6\n", "blue")
 
 
-#TODO: For CPU Check which Columns are available
+# TO DO: For CPU Check which Columns are available
 def get_input_cpu():
     """ Function to get the cpu random input """
     cpu_choice_col = random.randint(0, 6)
@@ -115,27 +119,29 @@ def players_turn(next_turn):
     coin_row_to_insert = -1
     input_player = -1
     if genre == "human":
-        input_player = int(input(f"{name} it's your turn! Pick a column from 0 to 5: \n"))
+        input_player = int(
+            input(f"{name} it's your turn! Pick a column from 0 to 5: \n"))
     elif genre == "cpu":
         input_player = get_input_cpu()
+        cprint(f"{name} has picked the column: {input_player}!", "magenta")
     else:
         cprint("Error: This genre is not available. Please restart the game!")
         exit()
-    
+
     if input_player != "" and input_player >= 0 and input_player <= 6:
         coin_row_to_insert = get_row_insert(input_player)
     else:
         print("The column number entered is not valid. Please try again!")
         players_turn(next_turn)
-        
+
     if coin_row_to_insert != -1:
         insert_value_matrix(coin_row_to_insert, input_player, coin)
         if check_game_over():
             render_board()
             reset_game()
-        elif check_for_winner(next_turn, name, coin):
+        elif check_for_winner(name, coin):
             render_board()
-            reset_game()   
+            reset_game()
         else:
             move_forward(next_turn)
     else:
@@ -147,9 +153,9 @@ def get_row_insert(input_player):
     """ Function to realize the gravity for the Coins """
     row_ins = -1
     for row in range(BOARD_ROW):
-        cell = board[BOARD_ROW - row -1][input_player]
+        cell = board[BOARD_ROW - row - 1][input_player]
         if cell == "":
-            row_ins = BOARD_ROW - row -1
+            row_ins = BOARD_ROW - row - 1
             break
     return row_ins
 
@@ -159,13 +165,13 @@ def insert_value_matrix(row, col, coin):
     Function to insert value in the Matrix!
     """
     board[row][col] = coin
-    
-      
-#TODO: Checks End Game
+
+
+# TO DO: Checks End Game
 def check_game_over():
+    """ Function that check if the game is ended """
     game_over = False
     game_over = check_if_board_full()
-    #TODO: Check for winner 
     return game_over
 
 
@@ -178,29 +184,37 @@ def check_if_board_full():
         return True
 
 
-def check_for_winner(next_turn, name, coin):
+def check_for_winner(name, coin):
     """Horizontal/Vertical/Diagonal"""
-    #coin = players[next_turn-1].coin
-    #name = players[next_turn-1].name
-    #for row in range(BOARD_ROW):
-    #    for col in range(BOARD_COL):
-    #        if board[row][col] == "🟡":
-    #            coin += 1
-    #            print("this is the value of the yellow coin:", coin) 
+    #Check for Horizontal Winner
     for col in range(4):
         for row in range(BOARD_ROW):
-            if board[row][col] == coin and board[row][col+1] == coin and board[row][col+2] == coin and board[row][col+3] == coin:
-                cprint(f"{name} you are the WINNER!!!", "yellow")
+            if board[row][col] == board[row][col+1] == \
+                board[row][col+2] == board[row][col+3] == coin:
+                cprint(f"🎉 {name} you are the WINNER!!! Congratulations!!! 🎉", "yellow")
                 return True
 
+    # Check for Vertical Winner
+    for col in range(BOARD_COL):
+        for row in range(3):
+            if board[row][col] == board[row+1][col] == \
+                board[row+2][col] == board[row+3][col] == coin:
+                cprint(f"🎉 {name} you are the WINNER!!! Congratulations!!! 🎉", "yellow")
+                return True
 
-def check_for_winner_diagonal():
-    board = np.arange(42).reshape((6,7))
-    np.diag(np.diag(board))
-    print(board)
+    #Check for Diagonal Winner
+    for col in range(4):
+        for row in range(3):
+            if board[row][col] == board[row+1][col+1] == \
+                board[row+2][col+2] == board[row+3][col+3] == coin:
+                cprint(f"🎉 {name} you are the WINNER!!! Congratulations!!! 🎉", "yellow")
+                return True
+
+    # TO DO: Diagonal Negative Value
 
 
 def move_forward(prev_turn):
+    """ Function to determinate the turn of the player """
     next_turn = 0
     if prev_turn == 1:
         next_turn = 2
@@ -216,10 +230,11 @@ def start_game():
     and ask for the Usernames
     """
     print("Are you ready for the Ultimate Connect 4 Battle?\n")
-    select_mode = input("Do you want to play in [S]ingle or [M]ultiplayer Mode?\n").lower()
+    select_mode = input(
+        "Do you want to play in [S]ingle or [M]ultiplayer Mode?\n").lower()
     if select_mode == "s":
-        players.append(Player("", 1, "🟡", "human"))
-        players.append(Player("Roboto", 2, "🔴", "cpu"))
+        players.append(Player("", 1, "🟡", "human")) #TO DO: Enums instead "human".
+        players.append(Player("Roboto", 2, "🔴", "cpu")) #TO DO: Enums instead "cpu".
         players[0].input_info()
         players[0].print_info()
         print("Great! The Board is ready!!! Let's Play!!!")
@@ -227,7 +242,6 @@ def start_game():
         render_board()
         players_turn(1)
     elif select_mode == "m":
-        # TO DO: Input Player Info
         players.append(Player("", 1, "🟡", "human"))
         players.append(Player("", 2, "🔴", "human"))
         for player in players:
@@ -240,15 +254,16 @@ def start_game():
     else:
         cprint("This is not a valid option! Please try again!\n", "red")
         start_game()
-    
-    
+
+
 def start_menu():
     """
-    Ask to the user if they want to Start Playing 
+    Ask to the user if they want to Start Playing
     or read the Instructions.
     """
-    cprint("               Welcome to Connect 4\n", "red")
-    selection = input("Do you want to [P]lay or read the [I]nstructions?\n").lower()
+    cprint("\n\t\tWelcome to Connect 4\n", "red")
+    selection = input(
+        "Do you want to [P]lay or read the [I]nstructions?\n").lower()
     if selection == "p":
         start_game()
     elif selection == "i":
@@ -257,13 +272,13 @@ def start_menu():
     else:
         print("Invalid Selection")
         main()
-        
+
 
 def main():
     """
     Start all initial programs
     """
-    logo()
+    display_logo()
     start_menu()
 
 
