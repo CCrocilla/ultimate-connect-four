@@ -67,7 +67,7 @@ def clear_console():
 
 
 def go_to_main_menu():
-    """ Return the player to the Main Menu """
+    """ Return to the Main Menu """
     pause()
     clear_console()
     main()
@@ -157,10 +157,7 @@ def players_turn(next_turn):
 
     if coin_row_to_insert != -1:
         insert_value_matrix(coin_row_to_insert, input_player, coin)
-        if check_game_over():
-            render_board()
-            restart_end_game()
-        elif check_for_winner(name, coin):
+        if check_game_over(name, coin):
             render_board()
             restart_end_game()
         else:
@@ -182,22 +179,25 @@ def get_row_insert(input_player):
 
 
 def insert_value_matrix(row, col, coin):
-    """
-    Function to insert value in the Matrix!
-    """
+    """ Function to insert value in the Matrix! """
     board[row][col] = coin
 
 
 # TO DO: Checks End Game
-def check_game_over():
+def check_game_over(name, coin):
     """ Function that check if the game is ended """
     game_over = False
     game_over = check_if_board_full()
+    game_over = check_for_winner(name, coin)
     return game_over
 
 
 def check_if_board_full():
-    """ Check all the string in the array """
+    """
+    Check if any of the string in the array is empty.
+    If there is no empty string in the array then return
+    True value and the game is over as tie
+    """
     if any("" in element for element in board):
         return False
     else:
@@ -206,7 +206,7 @@ def check_if_board_full():
 
 
 def check_for_winner(name, coin):
-    """Horizontal/Vertical/Diagonal"""
+    """ Check for the Horizontal/Vertical/Diagonal Winner """
     #Check for Horizontal Winner
     for col in range(4):
         for row in range(BOARD_ROW):
@@ -228,6 +228,14 @@ def check_for_winner(name, coin):
         for row in range(3):
             if board[row][col] == board[row+1][col+1] == \
                 board[row+2][col+2] == board[row+3][col+3] == coin:
+                cprint(f"🎉 {name} you are the WINNER!!! Congratulations!!! 🎉", "yellow")
+                return True
+
+    #Check for Negative Diagonal Winner
+    for col in range(4):
+        for row in range(5, 2, -1):
+            if board[row][col] == board[row-1][col+1] == \
+                board[row-2][col+2] == board[row-3][col+3] == coin:
                 cprint(f"🎉 {name} you are the WINNER!!! Congratulations!!! 🎉", "yellow")
                 return True
 
