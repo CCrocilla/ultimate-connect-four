@@ -163,7 +163,8 @@ def players_turn(next_turn):
         else:
             move_forward(next_turn)
     else:
-        print("Sorry but the column is full! Please pick a new one!")
+        if genre == "human":
+            print("Sorry but the column is full! Please pick a new one!")
         players_turn(next_turn)
 
 
