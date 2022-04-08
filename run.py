@@ -6,6 +6,7 @@ import time
 from enum import Enum
 import numpy as np
 from termcolor import cprint
+import gameover
 
 
 BOARD_ROW = 6
@@ -24,6 +25,7 @@ print(columns)
 TEXT_PYTHON = "Python is awsome"
 TEXT_PYTHON.center(50)
 print(TEXT_PYTHON)
+
 
 class Player:
     """
@@ -137,7 +139,6 @@ def render_board():
             cprint(f"|  {cell}  |", "blue", end="")
     cprint(f"\n{lines * 56}", "blue")
     cprint("\n    0       1       2       3       4       5       6\n", "blue")
-    #cprint("\n\t0\t1\t2\t3\t4\t5\t6\n", "blue")
 
 
 # TO DO: For CPU Check which Columns are available
@@ -183,7 +184,7 @@ def players_turn(next_turn):
                 print("Sorry but the column is full! Please pick a new one!")
             players_turn(next_turn)
     except ValueError as error:
-        cprint(f"\n{error} is not valid insert. Please try again!\n", "red")
+        cprint(f"\n{error} is not a valid input. Please try again!\n", "red")
         players_turn(next_turn)
 
 
@@ -218,57 +219,9 @@ def move_forward(prev_turn):
 def check_game_over(name, coin):
     """ Function that check if the game is ended """
     game_over = False
-    game_over = check_if_board_full()
-    game_over = check_for_winner(name, coin)
+    game_over = gameover.check_if_board_full(board)
+    game_over = gameover.check_for_winner(board, name, coin, BOARD_ROW, BOARD_COL)
     return game_over
-
-
-def check_if_board_full():
-    """
-    Check if any of the string in the array is empty.
-    If there is no empty string in the array then return
-    True value and the game is over as tie
-    """
-    if any("" in element for element in board):
-        return False
-    else:
-        cprint("Game Over! The Board is full! This is a tie!", "red")
-        return True
-
-
-def check_for_winner(name, coin):
-    """ Check for the Horizontal/Vertical/Diagonal Winner """
-    #Check for Horizontal Winner
-    for col in range(4):
-        for row in range(BOARD_ROW):
-            if board[row][col] == board[row][col+1] == \
-                board[row][col+2] == board[row][col+3] == coin:
-                cprint(f"🎉 {name} you are the WINNER!!! Congratulations!!! 🎉", "yellow")
-                return True
-
-    # Check for Vertical Winner
-    for col in range(BOARD_COL):
-        for row in range(3):
-            if board[row][col] == board[row+1][col] == \
-                board[row+2][col] == board[row+3][col] == coin:
-                cprint(f"🎉 {name} you are the WINNER!!! Congratulations!!! 🎉", "yellow")
-                return True
-
-    #Check for Diagonal Winner
-    for col in range(4):
-        for row in range(3):
-            if board[row][col] == board[row+1][col+1] == \
-                board[row+2][col+2] == board[row+3][col+3] == coin:
-                cprint(f"🎉 {name} you are the WINNER!!! Congratulations!!! 🎉", "yellow")
-                return True
-
-    #Check for Negative Diagonal Winner
-    for col in range(4):
-        for row in range(5, 2, -1):
-            if board[row][col] == board[row-1][col+1] == \
-                board[row-2][col+2] == board[row-3][col+3] == coin:
-                cprint(f"🎉 {name} you are the WINNER!!! Congratulations!!! 🎉", "yellow")
-                return True
 
 
 def start_game():
