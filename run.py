@@ -1,6 +1,8 @@
 """ Import """
 import os
 import random
+import shutil
+import time
 from enum import Enum
 import numpy as np
 from termcolor import cprint
@@ -17,7 +19,11 @@ board = np.array([
     ["", "", "", "", "", "", ""],
     ["", "", "", "", "", "", ""],
 ])
-
+columns = shutil.get_terminal_size().columns
+print(columns)
+TEXT_PYTHON = "Python is awsome"
+TEXT_PYTHON.center(50)
+print(TEXT_PYTHON)
 
 class Player:
     """
@@ -31,8 +37,12 @@ class Player:
 
     def input_info(self):
         """ Request name to the user(s) """
-        self.name = input(f"Player {self.turn} what's your name?\n")
-        cprint(f"\nHi {self.name}! Welcome in Ultimate Connect 4!", "cyan")
+        try:
+            self.name = input(f"Player {self.turn} what's your name?\n")
+            cprint(f"\nHi {self.name}! Welcome in Ultimate Connect 4!", "cyan")
+        except ValueError:
+            cprint("\nHi! This is not a valid input! Please try again!\n", "red")
+            Player.input_info(self)
 
     def print_info(self):
         """ Display Information to the user about turn and coin """
@@ -49,13 +59,18 @@ class Genres(Enum):
 def display_logo():
     """ Display the ASCII Logo """
     with open("assets/files/logo.txt", encoding="utf-8") as logo:
-        main_menu = logo.read()
+        main_menu = logo.read().center(columns)
         cprint(main_menu, "red")
 
 
 def pause():
     """ Pause until the user press Enter """
     input("Press the [ENTER] key to return Home...\n")
+
+
+def pause_continue():
+    """ Pause until the user press Enter """
+    input("Press the [ENTER] key to continue...\n")
 
 
 def clear_console():
@@ -139,33 +154,38 @@ def players_turn(next_turn):
     genre = players[next_turn-1].genre
     coin_row_to_insert = -1
     input_player = -1
-    if genre == "human":
-        input_player = int(
-            input(f"{name} it's your turn! Pick a column from 0 to 5: \n"))
-    elif genre == "cpu":
-        input_player = get_input_cpu()
-        cprint(f"{name} has picked the column: {input_player}!", "magenta")
-    else:
-        cprint("Error: This genre is not available. Please restart the game!", "red")
-        exit()
-
-    if input_player != "" and input_player >= 0 and input_player <= 6:
-        coin_row_to_insert = get_row_insert(input_player)
-    else:
-        cprint("The column number entered is not valid. Please try again!", "red")
-        players_turn(next_turn)
-
-    if coin_row_to_insert != -1:
-        insert_value_matrix(coin_row_to_insert, input_player, coin)
-        if check_game_over(name, coin):
-            render_board()
-            restart_end_game()
-        else:
-            move_forward(next_turn)
-    else:
+    try:
         if genre == "human":
-            print("Sorry but the column is full! Please pick a new one!")
+            input_player = int(
+                input(f"{name} it's your turn {coin}! Pick a column from 0 to 5: \n"))
+        elif genre == "cpu":
+            input_player = get_input_cpu()
+            cprint(f"{name} has picked the column: {input_player}!", "magenta")
+        else:
+            cprint("Error: This genre is not available. Please restart the game!", "red")
+            exit()
+
+        if input_player != "" and input_player >= 0 and input_player <= 6:
+            coin_row_to_insert = get_row_insert(input_player)
+        else:
+            cprint("The column number entered is not valid. Please try again!", "red")
+            players_turn(next_turn)
+
+        if coin_row_to_insert != -1:
+            insert_value_matrix(coin_row_to_insert, input_player, coin)
+            if check_game_over(name, coin):
+                render_board()
+                restart_end_game()
+            else:
+                move_forward(next_turn)
+        else:
+            if genre == "human":
+                print("Sorry but the column is full! Please pick a new one!")
+            players_turn(next_turn)
+    except ValueError as error:
+        cprint(f"\n{error} is not valid insert. Please try again!\n", "red")
         players_turn(next_turn)
+
 
 
 def get_row_insert(input_player):
@@ -184,7 +204,17 @@ def insert_value_matrix(row, col, coin):
     board[row][col] = coin
 
 
-# TO DO: Checks End Game
+def move_forward(prev_turn):
+    """ Function to determinate the turn of the player """
+    next_turn = 0
+    if prev_turn == 1:
+        next_turn = 2
+    else:
+        next_turn = 1
+    render_board()
+    players_turn(next_turn)
+
+
 def check_game_over(name, coin):
     """ Function that check if the game is ended """
     game_over = False
@@ -241,17 +271,6 @@ def check_for_winner(name, coin):
                 return True
 
 
-def move_forward(prev_turn):
-    """ Function to determinate the turn of the player """
-    next_turn = 0
-    if prev_turn == 1:
-        next_turn = 2
-    else:
-        next_turn = 1
-    render_board()
-    players_turn(next_turn)
-
-
 def start_game():
     """
     Request to the user the mode(Single Player or Multiplayer)
@@ -280,7 +299,7 @@ def start_game():
         render_board()
         players_turn(1)
     else:
-        cprint("This is not a valid option! Please try again!\n", "red")
+        cprint("\nInvalid Selection! Please select one of the valid options!\n", "red")
         start_game()
 
 
@@ -298,7 +317,7 @@ def start_menu():
         clear_console()
         instruction()
     else:
-        print("Invalid Selection")
+        cprint("\nInvalid Selection! Please select one of the valid options!\n", "red")
         main()
 
 
