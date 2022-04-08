@@ -1,4 +1,4 @@
-""" Import termcolor in order to print with colors in Terminal """
+""" Import termcolor to print colors in Terminal """
 from termcolor import cprint
 
 
@@ -15,8 +15,8 @@ def check_if_board_full(board):
         return True
 
 
-def check_for_winner(board, name, coin, board_rows, board_cols):
-    """ Check for the Horizontal/Vertical/Diagonal Winner """
+def check_horizontal_winner(board, name, coin, board_rows):
+    """ Check for the Horizontal Winner """
     #Check for Horizontal Winner
     for col in range(4):
         for row in range(board_rows):
@@ -25,6 +25,9 @@ def check_for_winner(board, name, coin, board_rows, board_cols):
                 cprint(f"🎉 {name} you are the WINNER!!! Congratulations!!! 🎉", "yellow")
                 return True
 
+
+def check_vertical_winner(board, name, coin, board_cols):
+    """ Check for the Vertical Winner """
     # Check for Vertical Winner
     for col in range(board_cols):
         for row in range(3):
@@ -33,6 +36,9 @@ def check_for_winner(board, name, coin, board_rows, board_cols):
                 cprint(f"🎉 {name} you are the WINNER!!! Congratulations!!! 🎉", "yellow")
                 return True
 
+
+def check_diagonal_winner(board, name, coin):
+    """ Check for the Diagonal Winner """
     #Check for Diagonal Winner
     for col in range(4):
         for row in range(3):

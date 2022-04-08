@@ -1,12 +1,16 @@
 """ Import """
-import os
+import sys
 import random
-import shutil
-import time
+#import shutil
 from enum import Enum
 import numpy as np
 from termcolor import cprint
-import gameover
+from library.utilities import (clear_console, go_to_main_menu)
+from library.gameover import (check_if_board_full,
+                              check_horizontal_winner,
+                              check_vertical_winner,
+                              check_diagonal_winner
+                              )
 
 
 BOARD_ROW = 6
@@ -20,12 +24,11 @@ board = np.array([
     ["", "", "", "", "", "", ""],
     ["", "", "", "", "", "", ""],
 ])
-columns = shutil.get_terminal_size().columns
-print(columns)
-TEXT_PYTHON = "Python is awsome"
-TEXT_PYTHON.center(50)
-print(TEXT_PYTHON)
-
+# Narender reference on how to center the code
+#columns = shutil.get_terminal_size().columns
+#TEXT_PYTHON = "Python is awsome".center(columns, "^")
+#print(TEXT_PYTHON)
+#THANKSSSS!!!!! :)
 
 class Player:
     """
@@ -61,33 +64,8 @@ class Genres(Enum):
 def display_logo():
     """ Display the ASCII Logo """
     with open("assets/files/logo.txt", encoding="utf-8") as logo:
-        main_menu = logo.read().center(columns)
+        main_menu = logo.read()
         cprint(main_menu, "red")
-
-
-def pause():
-    """ Pause until the user press Enter """
-    input("Press the [ENTER] key to return Home...\n")
-
-
-def pause_continue():
-    """ Pause until the user press Enter """
-    input("Press the [ENTER] key to continue...\n")
-
-
-def clear_console():
-    """ Clear the Console Terminal """
-    command = 'clear'
-    if os.name in ('nt', 'dos'):  # "cls" if is running on Windows
-        command = 'cls'
-    os.system(command)
-
-
-def go_to_main_menu():
-    """ Return to the Main Menu """
-    pause()
-    clear_console()
-    main()
 
 
 def restart_end_game():
@@ -102,7 +80,7 @@ def restart_end_game():
         players_turn(1)
     elif select_restart_end_game == "e":
         print("Thanks for playing Connect 4! I hope to see you soon!\n")
-        exit()
+        sys.exit()
     else:
         cprint("This is not a valid option! Please try again!\n", "red")
         restart_end_game()
@@ -125,6 +103,7 @@ def instruction():
         cprint("\t\t\tInstructions\n", "red")
         cprint(rules.read())
     go_to_main_menu()
+    main()
 
 
 def render_board():
@@ -156,17 +135,17 @@ def players_turn(next_turn):
     coin_row_to_insert = -1
     input_player = -1
     try:
-        if genre == "human":
+        if genre is Genres.HUMAN:
             input_player = int(
                 input(f"{name} it's your turn {coin}! Pick a column from 0 to 5: \n"))
-        elif genre == "cpu":
+        elif genre is Genres.CPU:
             input_player = get_input_cpu()
             cprint(f"{name} has picked the column: {input_player}!", "magenta")
         else:
             cprint("Error: This genre is not available. Please restart the game!", "red")
-            exit()
+            sys.exit()
 
-        if input_player != "" and input_player >= 0 and input_player <= 6:
+        if input_player in range(0, BOARD_COL):
             coin_row_to_insert = get_row_insert(input_player)
         else:
             cprint("The column number entered is not valid. Please try again!", "red")
@@ -180,13 +159,12 @@ def players_turn(next_turn):
             else:
                 move_forward(next_turn)
         else:
-            if genre == "human":
+            if genre is Genres.HUMAN:
                 print("Sorry but the column is full! Please pick a new one!")
             players_turn(next_turn)
     except ValueError as error:
         cprint(f"\n{error} is not a valid input. Please try again!\n", "red")
         players_turn(next_turn)
-
 
 
 def get_row_insert(input_player):
@@ -219,8 +197,11 @@ def move_forward(prev_turn):
 def check_game_over(name, coin):
     """ Function that check if the game is ended """
     game_over = False
-    game_over = gameover.check_if_board_full(board)
-    game_over = gameover.check_for_winner(board, name, coin, BOARD_ROW, BOARD_COL)
+    game_over = check_if_board_full(board) or \
+        check_horizontal_winner(board, name, coin, BOARD_ROW) or \
+        check_vertical_winner(board, name, coin, BOARD_COL) or \
+        check_diagonal_winner(board, name, coin)
+    print("game value", game_over)
     return game_over
 
 
@@ -233,8 +214,8 @@ def start_game():
     select_mode = input(
         "Do you want to play in [S]ingle or [M]ultiplayer Mode?\n").lower()
     if select_mode == "s":
-        players.append(Player("", 1, "🟡", Genres.HUMAN.value)) #TO DO: Enums instead "human".
-        players.append(Player("Roboto", 2, "🔴", Genres.CPU.value)) #TO DO: Enums instead "cpu".
+        players.append(Player("", 1, "🟡", Genres.HUMAN)) #TO DO: Enums instead "human".
+        players.append(Player("Roboto", 2, "🔴", Genres.CPU)) #TO DO: Enums instead "cpu".
         players[0].input_info()
         players[0].print_info()
         print("Great! The Board is ready!!! Let's Play!!!")
@@ -242,8 +223,8 @@ def start_game():
         render_board()
         players_turn(1)
     elif select_mode == "m":
-        players.append(Player("", 1, "🟡", Genres.HUMAN.value))
-        players.append(Player("", 2, "🔴", Genres.HUMAN.value))
+        players.append(Player("", 1, "🟡", Genres.HUMAN))
+        players.append(Player("", 2, "🔴", Genres.HUMAN))
         for player in players:
             player.input_info()
             player.print_info()
