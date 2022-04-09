@@ -1,14 +1,21 @@
 """ Import OS """
 import os
+from termcolor import colored
+
+
+let_enter = colored("ENTER", 'cyan')
+
 
 def pause():
     """ Pause until the user press Enter """
-    input("Press the [ENTER] key to return Home...\n")
+    message_pause_home = f"Press the [{let_enter}] key to return Home...\n"
+    input(message_pause_home)
 
 
 def pause_continue():
     """ Pause until the user press Enter """
-    input("Press the [ENTER] key to continue...\n")
+    message_pause_continue = f"Press the [{let_enter}] key to continue...\n"
+    input(message_pause_continue)
 
 
 def clear_console():
