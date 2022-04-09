@@ -1,10 +1,10 @@
 """ Import """
 import sys
 import random
-#import shutil
+import shutil
 from enum import Enum
 import numpy as np
-from termcolor import cprint
+from termcolor import cprint, colored
 from library.utilities import (clear_console, go_to_main_menu)
 from library.gameover import (check_if_board_full,
                               check_horizontal_winner,
@@ -25,10 +25,14 @@ board = np.array([
     ["", "", "", "", "", "", ""],
 ])
 # Narender reference on how to center the code
-#columns = shutil.get_terminal_size().columns
+columns = shutil.get_terminal_size().columns
 #TEXT_PYTHON = "Python is awsome".center(columns, "^")
 #print(TEXT_PYTHON)
 #THANKSSSS!!!!! :)
+test = colored("test", 'cyan')
+print(f"This is a {test}".center(columns))
+cprint(f"This is a {test} of Test".center(columns), "red")
+
 
 class Player:
     """
@@ -44,6 +48,7 @@ class Player:
         """ Request name to the user(s) """
         try:
             self.name = input(f"Player {self.turn} what's your name?\n")
+            clear_console()
             cprint(f"\nHi {self.name}! Welcome in Ultimate Connect 4!", "cyan")
         except ValueError:
             cprint("\nHi! This is not a valid input! Please try again!\n", "red")
@@ -65,7 +70,7 @@ def display_logo():
     """ Display the ASCII Logo """
     with open("assets/files/logo.txt", encoding="utf-8") as logo:
         main_menu = logo.read()
-        cprint(main_menu, "red")
+        cprint(main_menu.center(columns), "red")
 
 
 def restart_end_game():
@@ -137,7 +142,7 @@ def players_turn(next_turn):
     try:
         if genre is Genres.HUMAN:
             input_player = int(
-                input(f"{name} it's your turn {coin}! Pick a column from 0 to 5: \n"))
+                input(f"{name} it's your turn {coin}! Pick a column from 0 to 6: \n"))
         elif genre is Genres.CPU:
             input_player = get_input_cpu()
             cprint(f"{name} has picked the column: {input_player}!", "magenta")
@@ -201,7 +206,6 @@ def check_game_over(name, coin):
         check_horizontal_winner(board, name, coin, BOARD_ROW) or \
         check_vertical_winner(board, name, coin, BOARD_COL) or \
         check_diagonal_winner(board, name, coin)
-    print("game value", game_over)
     return game_over
 
 
@@ -210,16 +214,18 @@ def start_game():
     Request to the user the mode(Single Player or Multiplayer)
     and ask for the Usernames
     """
-    print("Are you ready for the Ultimate Connect 4 Battle?\n")
-    select_mode = input(
-        "Do you want to play in [S]ingle or [M]ultiplayer Mode?\n").lower()
+    
+    let_s = colored("S", 'cyan')
+    let_m = colored("M", 'cyan')
+    message_start_game = f"Do you want to play in [{let_s}]ingle or [{let_m}]ultiplayer Mode?\n"
+    cprint("\n   Are you ready for the Ultimate Connect 4 Battle?\n", "cyan")
+    select_mode = input(message_start_game).lower()
     if select_mode == "s":
-        players.append(Player("", 1, "🟡", Genres.HUMAN)) #TO DO: Enums instead "human".
-        players.append(Player("Roboto", 2, "🔴", Genres.CPU)) #TO DO: Enums instead "cpu".
+        players.append(Player("", 1, "🟡", Genres.HUMAN))
+        players.append(Player("Roboto", 2, "🔴", Genres.CPU))
         players[0].input_info()
         players[0].print_info()
-        print("Great! The Board is ready!!! Let's Play!!!")
-        print("")
+        print("Great! The Board is ready!!! Roboto is your opponent! Let's Play!!!\n")
         render_board()
         players_turn(1)
     elif select_mode == "m":
@@ -228,8 +234,7 @@ def start_game():
         for player in players:
             player.input_info()
             player.print_info()
-        print("Great! The Board is ready!!! Let's Play!!!")
-        print("")
+        print("Great! The Board is ready!!! Let's Play!!!\n")
         render_board()
         players_turn(1)
     else:
@@ -242,10 +247,14 @@ def start_menu():
     Ask to the user if they want to Start Playing
     or read the Instructions.
     """
-    cprint("\n\t\tWelcome to Connect 4\n", "red")
-    selection = input(
-        "Do you want to [P]lay or read the [I]nstructions?\n").lower()
+    let_p = colored("P", 'cyan')
+    let_i = colored("I", 'cyan')
+    message_start_menu = f"Do you want to [{let_p}]lay or read the [{let_i}]nstructions?\n"
+    cprint("\n\t\tWelcome to Connect 4\n", "cyan")
+    selection = input(message_start_menu).lower()
     if selection == "p":
+        clear_console()
+        display_logo()
         start_game()
     elif selection == "i":
         clear_console()
