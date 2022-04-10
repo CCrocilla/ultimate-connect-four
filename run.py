@@ -1,7 +1,6 @@
 """ Import """
 import sys
 import random
-import shutil
 import time
 from enum import Enum
 import numpy as np
@@ -27,13 +26,6 @@ board = np.array([
     ["", "", "", "", "", "", ""],
     ["", "", "", "", "", "", ""],
 ])
-
-#columns = shutil.get_terminal_size().columns
-#TEXT_PYTHON = "Python is awsome".center(columns, "^")
-#print(TEXT_PYTHON)
-#test = colored("test", 'cyan')
-#print(f"This is a {test}".center(columns))
-#cprint(f"This is a {test} of Test".center(columns), "red")
 
 
 class Player:
@@ -154,7 +146,7 @@ def players_turn(next_turn):
             cprint(f"{name} has picked the column: {input_player+1}!", "green")
         elif genre is Genres.CPU:
             input_player = get_input_cpu()
-            cprint(f"{name} is thinking!", "magenta")
+            cprint(f"{name} is thinking...", "magenta")
             time.sleep(4)
             clear_console()
             cprint(f"{name} has picked the column: {input_player+1}!", "magenta")
@@ -183,7 +175,7 @@ def players_turn(next_turn):
                 cprint("Sorry but the column is full! Please pick a new one!\n", "red")
             players_turn(next_turn)
     except ValueError:
-        cprint("\nThe value entered is not valid. Please try again!\n", "red")
+        cprint("\nError: The value entered is not allowed. Please try again!\n", "red")
         players_turn(next_turn)
 
 
