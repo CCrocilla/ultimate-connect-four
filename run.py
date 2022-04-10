@@ -127,13 +127,13 @@ def render_board():
                 cell = "  "
             cprint(f"|  {cell}  |", "blue", end="")
     cprint(f"\n{lines * 56}", "blue")
-    cprint("\n    0       1       2       3       4       5       6\n", "blue")
+    cprint("\n    1       2       3       4       5       6       7\n", "blue")
 
 
 # TO DO: For CPU Check which Columns are available
 def get_input_cpu():
     """ Function to get the cpu random input """
-    cpu_choice_col = random.randint(0, 6)
+    cpu_choice_col = random.randint(1, 7)
     return cpu_choice_col
 
 
@@ -147,16 +147,17 @@ def players_turn(next_turn):
     try:
         if genre is Genres.HUMAN:
             input_player = int(
-                input(f"{name} it's your turn {coin} ! Pick a column from 0 to 6: \n"))
+                input(f"{name} it's your turn {coin} ! Pick a column from 1 to 7: \n"))
+            input_player -= 1
             time.sleep(0.3)
             clear_console()
-            cprint(f"{name} has picked the column: {input_player}!", "green")
+            cprint(f"{name} has picked the column: {input_player+1}!", "green")
         elif genre is Genres.CPU:
             input_player = get_input_cpu()
             cprint(f"{name} is thinking!", "magenta")
-            time.sleep(3.5)
+            time.sleep(4)
             clear_console()
-            cprint(f"{name} has picked the column: {input_player}!", "magenta")
+            cprint(f"{name} has picked the column: {input_player+1}!", "magenta")
         else:
             cprint("Error: This genre is not available. Please restart the game!", "red")
             sys.exit()
@@ -182,7 +183,7 @@ def players_turn(next_turn):
                 cprint("Sorry but the column is full! Please pick a new one!\n", "red")
             players_turn(next_turn)
     except ValueError:
-        cprint("\nThe value is not a valid input. Please try again!\n", "red")
+        cprint("\nThe value entered is not valid. Please try again!\n", "red")
         players_turn(next_turn)
 
 
