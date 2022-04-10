@@ -13,6 +13,9 @@ from library.gameover import (check_if_board_full,
                               check_vertical_winner,
                               check_diagonal_winner
                               )
+from library.ai import (check_move_horizontal,
+                        check_move_vertical
+                        )
 
 
 BOARD_ROW = 6
@@ -92,7 +95,7 @@ def restart_end_game():
         reset_board()
         cprint("Are you ready for the rematch? The Board is Ready!\n", "cyan")
         render_board()
-        players_turn(1)
+        players_turn(1, 2)
     elif select_restart_end_game == "e":
         cprint("Thanks for playing Connect 4!" +
                "I hope to see you soon!\n", "green")
@@ -125,16 +128,29 @@ def render_board():
     cprint("\n    1       2       3       4       5       6       7\n", "blue")
 
 
-# TO DO: For CPU Check which Columns are available
-def get_input_cpu():
+def get_input_cpu(coin, coin_enemy):
     """ Function to get the cpu random input """
-    cpu_choice_col = random.randint(1, 7)
+    cpu_choice_col = 0
+
+    position_h = check_move_horizontal(coin, coin_enemy, board, BOARD_ROW)
+    if position_h is not None:
+        cpu_choice_col = position_h[1] + 1
+        return cpu_choice_col
+
+    position_v = check_move_vertical(coin, coin_enemy, board, BOARD_COL)
+    if position_v is not None:
+        cpu_choice_col = position_v[1] + 1
+        return cpu_choice_col
+
+    if cpu_choice_col == 0:
+        cpu_choice_col = random.randint(1, 7)
     return cpu_choice_col
 
 
-def players_turn(next_turn):
+def players_turn(next_turn, prev_turn):
     """ Function to pick insert users/cpu. Check Game Over/Winner """
     coin = players[next_turn-1].coin
+    coin_enemy = players[prev_turn-1].coin
     name = players[next_turn-1].name
     genre = players[next_turn-1].genre
     coin_row_to_insert = -1
@@ -150,7 +166,7 @@ def players_turn(next_turn):
             cprint(
                 f"{name} has picked the column: {input_player+1}!", "green")
         elif genre is Genres.CPU:
-            input_player = get_input_cpu()
+            input_player = get_input_cpu(coin, coin_enemy)
             input_player -= 1
             cprint(f"{name} is thinking...", "magenta")
             time.sleep(4)
@@ -169,7 +185,7 @@ def players_turn(next_turn):
             cprint("The column number entered is not valid." +
                    " Please try again!", "red")
             render_board()
-            players_turn(next_turn)
+            players_turn(next_turn, prev_turn)
 
         if coin_row_to_insert != -1:
             insert_value_matrix(coin_row_to_insert, input_player, coin)
@@ -183,11 +199,11 @@ def players_turn(next_turn):
             if genre is Genres.HUMAN:
                 cprint("Sorry but the column is full!" +
                        " Please pick a new one!\n", "red")
-            players_turn(next_turn)
+            players_turn(next_turn, prev_turn)
     except ValueError:
         cprint("\nError: The value entered is not allowed." +
                " Please try again!\n", "red")
-        players_turn(next_turn)
+        players_turn(next_turn, prev_turn)
 
 
 def get_row_insert(input_player):
@@ -214,7 +230,7 @@ def move_forward(prev_turn):
     else:
         next_turn = 1
     render_board()
-    players_turn(next_turn)
+    players_turn(next_turn, prev_turn)
 
 
 def check_game_over(name, coin):
@@ -246,7 +262,7 @@ def start_game():
         cprint("Great! The Board is ready!!!" +
                " Roboto is your opponent! Let's Play!!!\n", "green")
         render_board()
-        players_turn(1)
+        players_turn(1, 2)
     elif select_mode == "m":
         players.append(Player("", 1, "🟡", Genres.HUMAN))
         players.append(Player("", 2, "🔴", Genres.HUMAN))
@@ -256,7 +272,7 @@ def start_game():
         cprint("Great! The Board is ready!!!" +
                " Let's Play!!!\n", "green")
         render_board()
-        players_turn(1)
+        players_turn(1, 2)
     else:
         cprint("\nInvalid Selection! Please select a valid option!\n", "red")
         start_game()
