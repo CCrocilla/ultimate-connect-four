@@ -140,14 +140,14 @@ def players_turn(next_turn):
     input_player = -1
     try:
         if genre is Genres.HUMAN:
-            input_player = int(
-                input(
-                    f"{name} it's your turn {coin} !" +
-                    " Pick a column from 1 to 7: \n"))
+            input_player = int(input(
+                f"{name} it's your turn {coin} !" +
+                "Pick a column from 1 to 7: \n"))
             input_player -= 1
             time.sleep(0.3)
             clear_console()
-            cprint(f"{name} has picked the column: {input_player+1}!", "green")
+            cprint(
+                f"{name} has picked the column: {input_player+1}!", "green")
         elif genre is Genres.CPU:
             input_player = get_input_cpu()
             input_player -= 1
@@ -238,8 +238,8 @@ def start_game():
     cprint("\n   Are you ready for the Ultimate Connect 4 Battle?\n", "cyan")
     select_mode = input(msg_start_game).lower()
     if select_mode == "s":
-        players.append(Player("", 1, "🟡", Genres.HUMAN))
-        players.append(Player("Roboto", 2, "🔴", Genres.CPU))
+        players.append(Player("", 1, " 🟡 ", Genres.HUMAN))
+        players.append(Player("Roboto", 2, " 🔴 ", Genres.CPU))
         players[0].input_info()
         players[0].print_info()
         cprint("Great! The Board is ready!!!" +
@@ -247,8 +247,8 @@ def start_game():
         render_board()
         players_turn(1)
     elif select_mode == "m":
-        players.append(Player("", 1, "🟡", Genres.HUMAN))
-        players.append(Player("", 2, "🔴", Genres.HUMAN))
+        players.append(Player("", 1, " 🟡 ", Genres.HUMAN))
+        players.append(Player("", 2, " 🔴 ", Genres.HUMAN))
         for player in players:
             player.input_info()
             player.print_info()
