@@ -123,7 +123,7 @@ def render_board():
         for col in range(BOARD_COL):
             cell = board[row][col]
             if cell == "🟡" or cell == "🔴":
-                print(" ",cell , end= f" {end_lines}")
+                print(" ", cell, end= f"  {end_lines}")
             else:
                 print("  ", cell, end=f"  {end_lines}")
     cprint(f"\n{lines * 50}", "blue")
