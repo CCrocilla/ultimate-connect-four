@@ -118,14 +118,16 @@ def render_board():
     lines = "-"
     end_lines = colored(" |", "blue")
     for row in range(BOARD_ROW):
-        cprint(f"\n{lines * 56}", "blue")
+        cprint(f"\n{lines * 50}", "blue")
+        cprint("|", "blue", end="")
         for col in range(BOARD_COL):
             cell = board[row][col]
-            if cell == "":
-                cell = "  "
-            cprint(f"|  {cell} ", "blue", end = end_lines)
-    cprint(f"\n{lines * 56}", "blue")
-    cprint("\n    1       2       3       4       5       6       7\n", "blue")
+            if cell == "🟡" or cell == "🔴":
+                print(" ",cell , end= f" {end_lines}")
+            else:
+                print("  ", cell, end=f"  {end_lines}")
+    cprint(f"\n{lines * 50}", "blue")
+    cprint("\n    1      2      3      4      5      6      7\n", "blue")
 
 
 def get_input_cpu(coin, coin_enemy):
@@ -218,7 +220,7 @@ def get_row_insert(input_player):
 
 
 def insert_value_matrix(row, col, coin):
-    """ Function to insert value in the Matrix! """
+    """ Function to insert value in the Matrix """
     board[row][col] = coin
 
 
