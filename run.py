@@ -82,8 +82,8 @@ def instruction():
 
 def restart_end_game():
     """ Reset the game and bring the user to the Main menu """
-    let_r = colored("R", 'cyan')
-    let_e = colored("E", 'cyan')
+    let_r = colored("R", "cyan")
+    let_e = colored("E", "cyan")
     msg_restart = (
         f"Do you want the [{let_r}]ematch or [{let_e}]xit the Game?\n")
     select_restart_end_game = input(msg_restart).lower()
@@ -113,13 +113,14 @@ def reset_board():
 def render_board():
     """ Create and display the Board Game """
     lines = "-"
+    end_lines = colored(" |", "blue")
     for row in range(BOARD_ROW):
         cprint(f"\n{lines * 56}", "blue")
         for col in range(BOARD_COL):
             cell = board[row][col]
             if cell == "":
                 cell = "  "
-            cprint(f"|  {cell}  |", "blue", end="")
+            cprint(f"|  {cell} ", "blue", end = end_lines)
     cprint(f"\n{lines * 56}", "blue")
     cprint("\n    1       2       3       4       5       6       7\n", "blue")
 
@@ -231,15 +232,15 @@ def start_game():
     Request to the user the mode(Single Player or Multiplayer).
     Ask for the Username(s) and Print the information.
     """
-    let_s = colored("S", 'cyan')
-    let_m = colored("M", 'cyan')
+    let_s = colored("S", "cyan")
+    let_m = colored("M", "cyan")
     msg_start_game = (
         f"Do you want to play [{let_s}]ingle or [{let_m}]ultiplayer Mode?\n")
     cprint("\n   Are you ready for the Ultimate Connect 4 Battle?\n", "cyan")
     select_mode = input(msg_start_game).lower()
     if select_mode == "s":
-        players.append(Player("", 1, " 🟡 ", Genres.HUMAN))
-        players.append(Player("Roboto", 2, " 🔴 ", Genres.CPU))
+        players.append(Player("", 1, "🟡", Genres.HUMAN))
+        players.append(Player("Roboto", 2, "🔴", Genres.CPU))
         players[0].input_info()
         players[0].print_info()
         cprint("Great! The Board is ready!!!" +
@@ -247,8 +248,8 @@ def start_game():
         render_board()
         players_turn(1)
     elif select_mode == "m":
-        players.append(Player("", 1, " 🟡 ", Genres.HUMAN))
-        players.append(Player("", 2, " 🔴 ", Genres.HUMAN))
+        players.append(Player("", 1, "🟡", Genres.HUMAN))
+        players.append(Player("", 2, "🔴", Genres.HUMAN))
         for player in players:
             player.input_info()
             player.print_info()
@@ -266,8 +267,8 @@ def start_menu():
     Ask to the user if they want to Start Playing
     or read the Instructions.
     """
-    let_p = colored("P", 'cyan')
-    let_i = colored("I", 'cyan')
+    let_p = colored("P", "cyan")
+    let_i = colored("I", "cyan")
     msg_start_menu = (
         f"Do you want to [{let_p}]lay or read the [{let_i}]nstructions?\n")
     cprint("\n\t\tWelcome to Connect 4\n", "red")
