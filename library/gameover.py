@@ -1,4 +1,4 @@
-""" Import termcolor to print colors in Terminal """
+""" Imports """
 from termcolor import cprint
 from library.utilities import clear_console
 
@@ -19,37 +19,37 @@ def check_if_board_full(board):
 
 def check_horizontal_winner(board, name, coin, board_rows):
     """ Check for the Horizontal Winner """
-    #Check for Horizontal Winner
     for col in range(4):
         for row in range(board_rows):
             if board[row][col] == board[row][col+1] == \
-                board[row][col+2] == board[row][col+3] == coin:
+               board[row][col+2] == board[row][col+3] == coin:
                 clear_console()
-                cprint(f"🎉 {name} you are the WINNER!!! Congratulations!!! 🎉", "yellow")
+                cprint(f"🎉 {name} you are the WINNER!!!" +
+                       "Congratulations!!! 🎉", "yellow")
                 return True
 
 
 def check_vertical_winner(board, name, coin, board_cols):
     """ Check for the Vertical Winner """
-    # Check for Vertical Winner
     for col in range(board_cols):
         for row in range(3):
             if board[row][col] == board[row+1][col] == \
-                board[row+2][col] == board[row+3][col] == coin:
+               board[row+2][col] == board[row+3][col] == coin:
                 clear_console()
-                cprint(f"🎉 {name} you are the WINNER!!! Congratulations!!! 🎉", "yellow")
+                cprint(f"🎉 {name} you are the WINNER!!!" +
+                       "Congratulations!!! 🎉", "yellow")
                 return True
 
 
 def check_diagonal_winner(board, name, coin):
     """ Check for the Diagonal Winner """
-    #Check for Diagonal Winner
     for col in range(4):
         for row in range(3):
             if board[row][col] == board[row+1][col+1] == \
                 board[row+2][col+2] == board[row+3][col+3] == coin:
                 clear_console()
-                cprint(f"🎉 {name} you are the WINNER!!! Congratulations!!! 🎉", "yellow")
+                cprint(f"🎉 {name} you are the WINNER!!!" +
+                       "Congratulations!!! 🎉", "yellow")
                 return True
 
     #Check for Negative Diagonal Winner
@@ -58,6 +58,6 @@ def check_diagonal_winner(board, name, coin):
             if board[row][col] == board[row-1][col+1] == \
                 board[row-2][col+2] == board[row-3][col+3] == coin:
                 clear_console()
-                cprint(f"🎉 {name} you are the WINNER!!! Congratulations!!! 🎉", "yellow")
+                cprint(f"🎉 {name} you are the WINNER!!!" +
+                       "Congratulations!!! 🎉", "yellow")
                 return True
-            
