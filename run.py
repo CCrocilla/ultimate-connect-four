@@ -123,7 +123,7 @@ def render_board():
         for col in range(BOARD_COL):
             cell = board[row][col]
             if cell == "🟡" or cell == "🔴":
-                print(f"  {cell}", end= f" {end_lines}") #Add Extraspace for Heroku
+                print(f"  {cell}", end= f"  {end_lines}") #Add Extraspace for Heroku
             else:
                 print("  ", cell, end=f"  {end_lines}")
     cprint(f"\n{lines * 50}", "blue")
@@ -170,11 +170,11 @@ def players_turn(next_turn, prev_turn):
         elif genre is Genres.CPU:
             input_player = get_input_cpu(coin, coin_enemy)
             input_player -= 1
-            cprint(f"{name} is thinking...", "magenta")
+            cprint(f"{name} is thinking...", "cyan")
             time.sleep(4)
             clear_console()
             cprint(
-                f"{name} has picked the column: {input_player+1}!", "magenta")
+                f"{name} has picked the column: {input_player+1}!", "cyan")
         else:
             cprint("Error: This genre is not available." +
                    " Please restart the game!", "red")
