@@ -123,7 +123,7 @@ def render_board():
         for col in range(BOARD_COL):
             cell = board[row][col]
             if cell == "🟡" or cell == "🔴":
-                print(" ", cell, end= f"  {end_lines}")
+                print(f"  {cell}", end= f" {end_lines}") #Add Extraspace for Heroku
             else:
                 print("  ", cell, end=f"  {end_lines}")
     cprint(f"\n{lines * 50}", "blue")
@@ -161,7 +161,7 @@ def players_turn(next_turn, prev_turn):
         if genre is Genres.HUMAN:
             input_player = int(input(
                 f"{name} it's your turn {coin} !" +
-                "Pick a column from 1 to 7: \n"))
+                " Pick a column from 1 to 7: \n"))
             input_player -= 1
             time.sleep(0.3)
             clear_console()
@@ -254,7 +254,7 @@ def start_game():
     let_m = colored("M", "cyan")
     msg_start_game = (
         f"Do you want to play [{let_s}]ingle or [{let_m}]ultiplayer Mode?\n")
-    cprint("\n   Are you ready for the Ultimate Connect 4 Battle?\n", "cyan")
+    cprint("\nAre you ready for the Ultimate Connect 4 Battle?\n", "cyan")
     select_mode = input(msg_start_game).lower()
     if select_mode == "s":
         players.append(Player("", 1, "🟡", Genres.HUMAN))

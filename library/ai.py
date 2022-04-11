@@ -1,4 +1,4 @@
-""" Functions to realize the IA of the CPU """
+""" Functions to realize the AI of the CPU """
 
 def check_move_horizontal(coin, coin_enemy, board, board_rows):
     """ Check possible horizontal move"""
@@ -17,11 +17,11 @@ def check_move_horizontal(coin, coin_enemy, board, board_rows):
                     counter_empty += 1
                     positions = (row, col + shift)
             gravity_row = get_row_insert(board, board_rows, col + shift)
-            if counter_coin + counter_empty == 4 and counter_coin >= 3:
+            if counter_coin + counter_empty == 4 and counter_coin >= 2:
                 if gravity_row == positions[0]:
                     return positions
 
-            if counter_coin_enemy + counter_empty == 4 and counter_coin_enemy >= 3:
+            if counter_coin_enemy + counter_empty == 4 and counter_coin_enemy >= 2:
                 if gravity_row == positions[0]:
                     return positions
     return None
@@ -43,9 +43,9 @@ def check_move_vertical(coin, coin_enemy, board, board_cols):
                 if board[row + shift][col] == "":
                     counter_empty += 1
                     positions = (row + shift, col)
-            if counter_coin + counter_empty == 4 and counter_coin >= 3:
+            if counter_coin + counter_empty == 4 and counter_coin >= 2:
                 return positions
-            if counter_coin_enemy + counter_empty == 4 and counter_coin_enemy >= 3:
+            if counter_coin_enemy + counter_empty == 4 and counter_coin_enemy >= 2:
                 return positions
     return None
 
