@@ -55,7 +55,7 @@ class Player:
     def print_info(self):
         """ Display Information to the user about turn and coin """
         print(
-            f"\n{self.name} your turn is {self.turn} and the coin is {self.coin}!\n")
+            f"\n{self.name} your turn is {self.turn} and the coin is {self.coin} !\n")
 
 
 class Genres(Enum):
@@ -75,7 +75,8 @@ def instruction():
     """ Display the ASCII Instruction Logo and the Instructions """
     logo = "assets/files/instructions-logo.txt"
     rules = "assets/files/instructions-rules.txt"
-    with open(logo, encoding="utf-8") as logo, open(rules, encoding="utf-8") as rules:
+    with open(logo, encoding="utf-8") as logo, \
+        open(rules, encoding="utf-8") as rules:
         cprint(logo.read(), "red")
         cprint("\t\t\tInstructions\n", "red")
         cprint(rules.read())
@@ -309,6 +310,5 @@ def main():
     """
     display_logo()
     start_menu()
-
 
 main()
