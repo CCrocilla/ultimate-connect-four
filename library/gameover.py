@@ -25,7 +25,7 @@ def check_horizontal_winner(board, name, coin, board_rows):
                board[row][col+2] == board[row][col+3] == coin:
                 clear_console()
                 cprint(f"🎉  {name} you are the WINNER!!!" +
-                       " Congratulations!!!  🎉", "yellow")
+                       " Congratulations!!! 🎉", "yellow")
                 return True
 
 
@@ -37,7 +37,7 @@ def check_vertical_winner(board, name, coin, board_cols):
                board[row+2][col] == board[row+3][col] == coin:
                 clear_console()
                 cprint(f"🎉  {name} you are the WINNER!!!" +
-                       " Congratulations!!!  🎉", "yellow")
+                       " Congratulations!!! 🎉", "yellow")
                 return True
 
 
@@ -49,7 +49,7 @@ def check_diagonal_winner(board, name, coin):
                 board[row+2][col+2] == board[row+3][col+3] == coin:
                 clear_console()
                 cprint(f"🎉  {name} you are the WINNER!!!" +
-                       " Congratulations!!!  🎉", "yellow")
+                       " Congratulations!!! 🎉", "yellow")
                 return True
 
     #Check for Negative Diagonal Winner
@@ -59,5 +59,5 @@ def check_diagonal_winner(board, name, coin):
                 board[row-2][col+2] == board[row-3][col+3] == coin:
                 clear_console()
                 cprint(f"🎉  {name} you are the WINNER!!!" +
-                       " Congratulations!!!  🎉", "yellow")
+                       " Congratulations!!! 🎉", "yellow")
                 return True
