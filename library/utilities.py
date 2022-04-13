@@ -1,6 +1,6 @@
 """ Import OS """
 import os
-from termcolor import colored
+from termcolor import colored, cprint
 
 
 let_enter = colored("ENTER", 'cyan')
@@ -30,3 +30,10 @@ def go_to_main_menu():
     """ Return to the Main Menu """
     pause()
     clear_console()
+
+
+def display_logo():
+    """ Display the ASCII Logo """
+    with open("assets/files/logo.txt", encoding="utf-8") as logo:
+        main_menu = logo.read()
+        cprint(main_menu, "red")

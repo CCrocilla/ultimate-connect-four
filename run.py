@@ -2,11 +2,11 @@
 import sys
 import random
 import time
-from enum import Enum
 import numpy as np
 from termcolor import cprint, colored
 from library.utilities import (clear_console,
-                               go_to_main_menu
+                               go_to_main_menu,
+                               display_logo
                                )
 from library.gameover import (check_if_board_full,
                               check_horizontal_winner,
@@ -16,6 +16,7 @@ from library.gameover import (check_if_board_full,
 from library.ai import (check_move_horizontal,
                         check_move_vertical
                         )
+from library.player import Player, Genres
 
 
 BOARD_ROW = 6
@@ -29,46 +30,6 @@ board = np.array([
     ["", "", "", "", "", "", ""],
     ["", "", "", "", "", "", ""],
 ])
-
-
-class Player:
-    """
-    Class Player for the management of the Players information.
-    """
-    def __init__(self, name, turn, coin, genre):
-        self.name = name
-        self.turn = turn
-        self.coin = coin
-        self.genre = genre
-
-    def input_info(self):
-        """ Request name to the user(s) """
-        try:
-            self.name = input(f"Player {self.turn} what's your name?\n")
-            clear_console()
-            display_logo()
-            cprint(f"\nHi {self.name}! Welcome in Ultimate Connect 4!", "cyan")
-        except ValueError:
-            cprint("\nThis is not a valid input! Please try again!\n", "red")
-            Player.input_info(self)
-
-    def print_info(self):
-        """ Display Information to the user about turn and coin """
-        print(
-            f"\n{self.name} your turn is {self.turn} and the coin is {self.coin} !\n")
-
-
-class Genres(Enum):
-    """ Class for the Player Genre """
-    HUMAN = "human"
-    CPU = "cpu"
-
-
-def display_logo():
-    """ Display the ASCII Logo """
-    with open("assets/files/logo.txt", encoding="utf-8") as logo:
-        main_menu = logo.read()
-        cprint(main_menu, "red")
 
 
 def instruction():
@@ -99,7 +60,7 @@ def restart_end_game():
         players_turn(1, 2)
     elif select_restart_end_game == "e":
         cprint("Thanks for playing Connect 4!" +
-               "I hope to see you soon!\n", "green")
+               " I hope to see you soon!\n", "green")
         sys.exit()
     else:
         cprint("This is not a valid option! Please try again!\n", "red")
@@ -152,12 +113,12 @@ def get_input_cpu(coin, coin_enemy):
 
 def players_turn(next_turn, prev_turn):
     """ Function to pick insert users/cpu. Check Game Over/Winner """
+    coin_row_to_insert = -1
+    input_player = -1
     coin = players[next_turn-1].coin
     coin_enemy = players[prev_turn-1].coin
     name = players[next_turn-1].name
     genre = players[next_turn-1].genre
-    coin_row_to_insert = -1
-    input_player = -1
     try:
         if genre is Genres.HUMAN:
             input_player = int(input(
@@ -310,5 +271,6 @@ def main():
     """
     display_logo()
     start_menu()
+
 
 main()
