@@ -1,4 +1,4 @@
-""" Import """
+""" Imports """
 import sys
 import random
 import time
@@ -37,7 +37,7 @@ def instruction():
     logo = "assets/files/instructions-logo.txt"
     rules = "assets/files/instructions-rules.txt"
     with open(logo, encoding="utf-8") as logo, \
-        open(rules, encoding="utf-8") as rules:
+            open(rules, encoding="utf-8") as rules:
         cprint(logo.read(), "red")
         cprint("\t\t\tInstructions\n", "red")
         cprint(rules.read())
@@ -50,7 +50,7 @@ def restart_end_game():
     let_r = colored("R", "cyan")
     let_e = colored("E", "cyan")
     msg_restart = (
-        f"Do you want the [{let_r}]ematch or [{let_e}]xit the Game?\n")
+        f"Do you want a [{let_r}]ematch or [{let_e}]xit the Game?\n")
     select_restart_end_game = input(msg_restart).lower()
     if select_restart_end_game == "r":
         clear_console()
@@ -85,7 +85,7 @@ def render_board():
         for col in range(BOARD_COL):
             cell = board[row][col]
             if cell == "🟡" or cell == "🔴":
-                print(f"  {cell}", end= f"  {end_lines}") #Add Extraspace for Heroku
+                print(f"  {cell}", end=f"  {end_lines}")
             else:
                 print("  ", cell, end=f"  {end_lines}")
     cprint(f"\n{lines * 50}", "blue")
@@ -128,7 +128,7 @@ def players_turn(next_turn, prev_turn):
             time.sleep(0.3)
             clear_console()
             cprint(
-                f"{name} has picked the column: {input_player+1}!", "green")
+                f"\n{name} has picked the column: {input_player+1}!", "green")
         elif genre is Genres.CPU:
             input_player = get_input_cpu(coin, coin_enemy)
             input_player -= 1
