@@ -1,4 +1,4 @@
-""" Import """
+""" Imports """
 import os
 from termcolor import colored, cprint
 

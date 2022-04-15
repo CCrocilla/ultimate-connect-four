@@ -52,7 +52,6 @@ def check_diagonal_winner(board, name, coin):
                        " Congratulations!!! 🎉", "yellow")
                 return True
 
-
     for col in range(4):
         for row in range(5, 2, -1):
             if board[row][col] == board[row-1][col+1] == \

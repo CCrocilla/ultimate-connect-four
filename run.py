@@ -1,4 +1,4 @@
-""" Import """
+""" Imports """
 import sys
 import random
 import time
@@ -128,7 +128,7 @@ def players_turn(next_turn, prev_turn):
             time.sleep(0.3)
             clear_console()
             cprint(
-                f"{name} has picked the column: {input_player+1}!", "green")
+                f"\n{name} has picked the column: {input_player+1}!", "green")
         elif genre is Genres.CPU:
             input_player = get_input_cpu(coin, coin_enemy)
             input_player -= 1

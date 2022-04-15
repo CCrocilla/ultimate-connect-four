@@ -36,7 +36,7 @@
 	2. As a First Time Visitor, I want to be able to read clear Instructions on how the game works.
 	3. As a First Time Visitor, I want to be able to access the game and play against the CPU.
 	4. As a first Time Visitor, I want to be able to access the game and play with friends. 
-	4. As a First Time Visitor, I want to find the application pleasant to the eye, visually intuitive, with catchy colours.
+	4. As a First Time Visitor, I want to find the application pleasant to the eyes, visually intuitive, with catchy colours.
 
    
 - #### Returning Visitor Goals/Frequent User Goals
@@ -67,7 +67,7 @@
 
 **System:** Connect 4 Application.
 
-**Actors:** User looking to play to Connect 4.
+**Actors:** Users looking to play Connect 4.
 </details>
 
 <details>
@@ -83,7 +83,7 @@
 - The user browses for Connect 4 and discovers the application. The user navigates to the application of the website, and is attracted by the visual impact. 
 - The user reads the instructions/rules. 
 - The user selects which mode he/she wants to play.
-- The user(s) enters the name.
+- The user enters the name.
 - The user starts a new game.
 - The user wins/loses the game.
 - The user can restart the game or exit the application. 
@@ -108,7 +108,7 @@
 #### The list of colours is chosen to be pleasing to the eyes providing an excellent contrast in the terminal to allow the user to have prolonged gaming hours without tiring the eyes. 
 - ### **Colours Features** 
 #### The colour used for the Logos is Red.
-#### In each question the key letters that the user needs to press have been highlighted with a different colour for easy usage of the application. 
+#### In each question, the key letters that the user needs to press have been highlighted with a different colour for easy usage of the application. 
 #### The blue colour has been used for the board in order to replicate a realistic Connect 4.
 #### Each coin used by the user is an emoji. The colour of the coins are yellow and red as in the real Connect 4 game.
 
@@ -146,7 +146,7 @@ Each part and component used is listed below:
 #### Right after the Welcome Message there is an input function. 
 #### This function displays a message presenting the players with the possibility to type “P” to start playing the game or “I” to read the instructions.
 #### The “lower()” function has been integrated into the input to allow the user to type the required characters without having to mind the use of capitals vs lower letters. In this way, wherever the player types the letter, this will be always recognized by the software as uncapitalized.  
-#### To provide a visual impact the letters have been placed inside square brackets and highlighted using the Termcolor Module as can be seen in the image below: 
+#### To provide a visual impact, the letters have been placed inside square brackets and highlighted using the Termcolor Module as can be seen in the image below: 
 
 <details>
     <summary>Click here to see the image!</summary>  
@@ -154,15 +154,15 @@ Each part and component used is listed below:
 </details>
 
 #### If the player types an incorrect value an error message is prompted bringing the user back to the selection for a correct choice.
-#### Those behaviours are consistent in all part of the application.
+#### Those behaviours are consistent in all parts of the application.
 
 
 - ### *__Instructions__*:
 #### In the Main Menu, when typing “I”, the instructions/rules of the game can be accessed.
-#### The Instruction area displays a logo (“Instructions”) on the top left of the terminal followed by the Instructions of the game. The logo and the message of this area mimics the display of the main page, they are represented in red for consistency, with flames arising from the logo (isn’t it hot to play this game?? 😁). 
+#### The Instruction area displays a logo (“Instructions”) on the top left of the terminal followed by the Instructions of the game. The logo and the message of this area mimic the display of the main page, they are represented in red for consistency, with flames arising from the logo (isn’t it hot to play this game?? 😁). 
 #### As for the Main Menu the Instruction Logo and the Instructions have been placed in a txt files and displayed in the terminal using the “with” statement, the function “open” and the print() function. 
 #### Once the Player is ready, he/she can press the Enter Key to go back to the Main Menu.
-#### A clear() function was created to remove the content of the terminal once the Player press the Enter Key, bringing the user back to the Main Menu. 
+#### A clear() function was created to remove the content of the terminal once the Player presses the Enter Key, bringing the user back to the Main Menu. 
  
 
 - ### *__Start Menu__*:
@@ -171,13 +171,13 @@ Each part and component used is listed below:
 
 - ### *__Start Game__*:
 #### After the selection of the mode, the user will be asked to insert his/hers name.
-#### This is saved in a List and it is used during the game. If the M (Multiplayer is selected) users can insert their name as player 1 and player 2.
+#### This is saved in a List and it is used during the game. If the M (Multiplayer) is selected users can insert their name as player 1 and player 2.
 #### Once the name is inserted, the terminal will show the user his/hers name associated with the player turn and an emoji (coin) either red or yellow.  
-#### In Single Player Mode the users will play against a CPU called Roboto. 
+#### In Single Player Mode the user will play against a CPU called Roboto. 
 #### Roboto represents an artificial intelligence (AI), defined in python with two functions used to investigate the board and the position of the placed coins horizontally and vertically placing the next move either to block the opponent or to attack when two coins of the same colours are adjacent.  
 #### In Multiplayer Mode two humans will challenge each other.
 
-#### The Players/Robot can select the board desired position by indicating a number from 1 to 7 representing the columns (this is also displayed in a message printed into the board to provide a clear view to the player). For each new move a new board is rendered showing the placed coins. In addition, a message is displayed in the top section of the terminal summarising the move of the opponent (either from Roboto or the other human player). 
+#### The Players/Roboto can select the board desired position by indicating a number from 1 to 7 representing the columns (this is also displayed in a message printed into the board to provide a clear instructions to the players). Every time the Player/CPU makes a move, the coin is positioned at the lowest free space for that particular chosen column. This was designed in the code using a function that simulates the Gravity of the coins. For each new move a new board is rendered showing the placed coins. In addition, a message is displayed in the top section of the terminal summarising the move of the opponent (either from Roboto or the other human player). 
 #### The game ends when one is able to place 4 consecutive coins either vertically, horizontally or diagonally.
 #### Once the player/cpu wins a message will display the name of the winner, the board is rendered in order to see the winning combination and a message will be prompt to the user asking to either try a rematch (by typing R) or exit the game (by typing E).
 
@@ -201,37 +201,37 @@ Each part and component used is listed below:
 <img src="assets/images/wf-instructions.webp" alt="Instructions" width="1000px"/>
 </details>
 
-- ## Gameplay
+- ## Select Mode Single Player
 <details>
     <summary>Click here for Select Mode Single Player View</summary>  
 <img src="assets/images/wf-select-mode-single-player.webp" alt="Selection Single Player Mode" width="1000px"/>
 </details>
 
-- ## Winner View 
+- ## Select Mode Multiplayer 
 <details>
     <summary>Click here for Select Mode Multiplayer View</summary>  
 <img src="assets/images/wf-select-mode-multiplayer.webp" alt="Selection Multiplayer Mode" width="1000px"/>
 </details>
 
-- ## Main Menu 
+- ## Start Single Player Mode
 <details>
     <summary>Click here for Start Single Player Mode View</summary>  
 <img src="assets/images/wf-start-single-player-mode.webp" alt="Start Game Single Player Mode" width="1000px"/>
 </details>
 
-- ## Main Menu 
+- ## Start Multiplayer Mode
 <details>
     <summary>Click here for Start Multiplayer Mode View</summary>  
 <img src="assets/images/wf-start-multiplayer-mode.webp" alt="Start Game Multiplayer Mode" width="1000px"/>
 </details>
 
-- ## Main Menu 
+- ## Gameplay
 <details>
     <summary>Click here for Gameplay View</summary>  
 <img src="assets/images/wf-gameplay.webp" alt="Gameplay" width="1000px"/>
 </details>
 
-- ## Main Menu 
+- ## Winner Screen 
 <details>
     <summary>Click here for Winner Screen View</summary>  
 <img src="assets/images/wf-winner-screen.webp" alt="Winner Screen" width="1000px"/>
@@ -256,7 +256,7 @@ Each part and component used is listed below:
 #### No Design Framework has been used.
 
 - #### Random Module: 
-    - #### Random is a built-in module used to make random numbers. It has been used for the CPU to generate random value for the Connect 4  to allow Roboto making moves if no adjacent coins are available (early stage of the game).
+    - #### Random is a built-in module used to make random numbers. It has been used for the CPU to generate random values to allow Roboto making moves if no adjacent coins are available (early stage of the game).
 
 - #### Termcolor Module:
     - #### Termcolor has been used to colour the text in the terminal.
@@ -268,7 +268,7 @@ Each part and component used is listed below:
     - #### This module provides various time-related functions. It has been used to set delayed time with the sleep() method. 
     
 - #### Numpy  Module:
-    - #### This module provides multidimensional array object, as well as variations like matrices, which can be used for various math operations. It has been used to manage the matrix created for the Connect 4.
+    - #### This module provides multidimensional array objects, as well as variations like matrices, which can be used for various math operations. It has been used to manage the matrix created for the Connect 4.
     
 - #### Enum Module:
     - #### This module defines four enumeration classes that can be used to define unique sets of names and values. It has been used to define the genre (human or cpu player). 
@@ -326,7 +326,7 @@ List of Test Cases performed. These Tests were executed for all available Device
 | Terminal | Main Menu | Make sure that the Logo is displayed in the Terminal. | Pass |
 | Terminal | Main Menu | Make sure that the colour of the Logo is red. | Pass |
 | Terminal | Main Menu | Make sure that the Play or Instructions selection message is displayed and that the letters are highlighted.| Pass |
-| Terminal | Main Menu | Make sure that typing “i” and then pressing the Enter Key the player access the Instructions. | Pass |
+| Terminal | Main Menu | Make sure that typing “i” and then pressing the Enter Key the player accesses the Instructions. | Pass |
 | Terminal | Instructions | Make sure that the instructions are displayed. | Pass |
 | Terminal | Instructions | Make sure that pressing the Enter Key the user is redirected back to the Main Menu. | Pass |
 | Terminal | Main Menu | Make sure that typing “p” and then pressing the Enter Key the player accesses the Start Menu.  | Pass |
@@ -336,8 +336,8 @@ List of Test Cases performed. These Tests were executed for all available Device
 | Terminal | Main Menu | Make sure that typing “m” and then pressing the Enter Key the player accesses the Multiplayer Mode.  | Pass |
 | Terminal | Start Game | Make sure that in Single Player Mode only the name of Player 1 is requested. | Pass |
 | Terminal | Start Game | Make sure that the user can enter the name and press the Enter Key to start the game. | Pass |
-| Terminal | Start Game | Make sure that in Multiplayer Mode both name of Player 1 and 2 are requested. | Pass |
-| Terminal | Start Game | Make sure that both users can enter their name and press the Enter Key to start the game. | Pass |
+| Terminal | Start Game | Make sure that in Multiplayer Mode both names of Player 1 and 2 are requested. | Pass |
+| Terminal | Start Game | Make sure that both users can enter their names and press the Enter Key to start the game. | Pass |
 | Terminal | Single Player Mode | Make sure that a message to the user is displayed showing the turn and coin colour associated. | Pass |
 | Terminal | Single Player Mode | Make sure that the board is rendered correctly. | Pass |
 | Terminal | Single Player Mode | Make sure that a message prints the available selection (column numbers) to the user. | Pass |
@@ -351,7 +351,7 @@ List of Test Cases performed. These Tests were executed for all available Device
 | Terminal | Multiplayer Mode | Make sure that a message prints the available selection (column numbers) to the user. | Pass |
 | Terminal | Multiplayer Mode | Make sure that entering the correct column number the coin is printed in the column board selected | Pass |
 | Terminal | Multiplayer Mode | Make sure that if entering an incorrect column number a clear error message is displayed to guide the user to select the correct value. | Pass |
-| Terminal | Multiplayer Mode | Make sure that after the first move the next move/turn is managed by the second player/cpu. | Pass |
+| Terminal | Multiplayer Mode | Make sure that after the first move the next move/turn is managed by the second player. | Pass |
 | Terminal | Multiplayer Mode | Make sure that at the end of each move a message is displayed showing the move made by the previous user. | Pass |
 | Terminal | Multiplayer Mode | Make sure that at the end of each move the terminal is cleared and a new one is generated with the coin entered by the user(s) | Pass |
 | Terminal | All Modes | Make sure once the game is won, the terminal is cleared and the board is rendered. | Pass |
@@ -370,7 +370,13 @@ Tests have been performed on Firefox, Microsoft Edge, Chrome and Safari and the 
 ### **Bugs**
 Observed Results:
 - Please note that in Firefox, the emoji (coins) are cut-off as can be seen in the image below. 
-The developer has fully investigate and researched the issue through the web, including the installation of buildpacks in Heroku, however the rendering of the emoji (the coins) was still defective with no successful solutions found. 
+
+<details>
+    <summary>Click here to see the Firefox Coin Cut-Off Bug </summary>
+<img src="assets/images/firefox-coin-bug.webp" alt="PIP8 Python Validator File gameover.py" width="1000px"/>
+</details>
+
+The developer has fully investigated and researched the issue through the web, including the installation of buildpacks in Heroku, however the rendering of the emoji (the coins) was still defective with no successful solutions found. 
 
 
 ### **Future Implementation**

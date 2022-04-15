@@ -31,7 +31,7 @@ class Player:
         """ Display Information to the user about turn and coin """
         print(
             f"\n{self.name} your turn is {self.turn}" +
-            f" and your coin is {self.coin}!\n")
+            f" and your coin is {self.coin} !\n")
 
 
 class Genres(Enum):
