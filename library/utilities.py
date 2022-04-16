@@ -12,12 +12,6 @@ def pause():
     input(message_pause_home)
 
 
-def pause_continue():
-    """ Pause until the user press Enter """
-    message_pause_continue = f"Press the [{let_enter}] key to continue...\n"
-    input(message_pause_continue)
-
-
 def clear_console():
     """ Clear the Console Terminal """
     command = 'clear'

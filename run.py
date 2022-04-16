@@ -3,20 +3,19 @@ import sys
 import random
 import time
 import numpy as np
-from termcolor import cprint, colored
-from library.utilities import (clear_console,
-                               go_to_main_menu,
-                               display_logo
-                               )
-from library.gameover import (check_if_board_full,
-                              check_horizontal_winner,
-                              check_vertical_winner,
-                              check_diagonal_winner
-                              )
-from library.ai import (check_move_horizontal,
-                        check_move_vertical
-                        )
-from library.player import Player, Genres
+from termcolor import (cprint,
+                       colored)
+from library import (Player,
+                     Genres,
+                     display_logo,
+                     clear_console,
+                     go_to_main_menu,
+                     check_if_board_full,
+                     check_horizontal_winner,
+                     check_vertical_winner,
+                     check_diagonal_winner,
+                     check_move_horizontal,
+                     check_move_vertical)
 
 
 BOARD_ROW = 6
@@ -53,11 +52,7 @@ def restart_end_game():
         f"Do you want a [{let_r}]ematch or [{let_e}]xit the Game?\n")
     select_restart_end_game = input(msg_restart).lower()
     if select_restart_end_game == "r":
-        clear_console()
         reset_board()
-        cprint("Are you ready for the rematch? The Board is Ready!\n", "cyan")
-        render_board()
-        players_turn(1, 2)
     elif select_restart_end_game == "e":
         cprint("Thanks for playing Connect 4!" +
                " I hope to see you soon!\n", "green")
@@ -69,10 +64,14 @@ def restart_end_game():
 
 def reset_board():
     """ Function to reset the board """
+    clear_console()
     cell = ""
     for row in range(BOARD_ROW):
         for col in range(BOARD_COL):
             board[row][col] = cell
+    cprint("\nAre you ready for the rematch? The Board is Ready!", "cyan")
+    render_board()
+    players_turn(1, 2)
 
 
 def render_board():
@@ -92,8 +91,11 @@ def render_board():
     cprint("\n    1      2      3      4      5      6      7\n", "blue")
 
 
-def get_input_cpu(coin, coin_enemy):
-    """ Function to get the cpu random input """
+def generate_input_cpu(coin, coin_enemy):
+    """
+    Function to generate with AI the choice of the CPU.
+    If no valid AI option return a random value.
+    """
     cpu_choice_col = 0
 
     position_h = check_move_horizontal(coin, coin_enemy, board, BOARD_ROW)
@@ -111,54 +113,80 @@ def get_input_cpu(coin, coin_enemy):
     return cpu_choice_col
 
 
+def get_input(name, coin, coin_enemy, genre):
+    """ Function to get the input for the board """
+    if genre is Genres.HUMAN:
+        input_player = get_input_human(name, coin)
+    elif genre is Genres.CPU:
+        input_player = get_input_cpu(name, coin, coin_enemy)
+    else:
+        cprint("Error: This genre is not available." +
+               " Please restart the game!", "red")
+        sys.exit()
+    return input_player
+
+
+def get_input_cpu(name, coin, coin_enemy):
+    """ Function to get input from player """
+    input_player = generate_input_cpu(coin, coin_enemy)
+    input_player -= 1
+    cprint(f"{name} is thinking...", "cyan")
+    time.sleep(4)
+    clear_console()
+    cprint(f"\n{name} has picked the column: {input_player+1}!", "cyan")
+    return input_player
+
+
+def get_input_human(name, coin):
+    """ Function to get input from cpu """
+    input_player = int(input(
+                f"{name} it's your turn {coin} !" +
+                " Pick a column from 1 to 7: \n"))
+    input_player -= 1
+    time.sleep(0.3)
+    clear_console()
+    cprint(f"\n{name} has picked the column: {input_player+1}!", "green")
+    return input_player
+
+
+def check_valid_move(input_player, next_turn, prev_turn):
+    """ Check if the input_player is valid """
+    coin_row_insert = -1
+    if input_player in range(0, BOARD_COL):
+        time.sleep(0.3)
+        coin_row_insert = get_row_insert(input_player)
+    else:
+        cprint("The column number entered is not valid." +
+               " Please try again!", "red")
+        render_board()
+        players_turn(next_turn, prev_turn)
+    return coin_row_insert
+
+
+def check_board(name, coin, next_turn):
+    """ Check the board for winners or pair """
+    if check_game_over(name, coin):
+        render_board()
+        time.sleep(0.3)
+        restart_end_game()
+    else:
+        move_forward(next_turn)
+
+
 def players_turn(next_turn, prev_turn):
     """ Function to pick insert users/cpu. Check Game Over/Winner """
-    coin_row_to_insert = -1
+    coin_row_insert = -1
     input_player = -1
     coin = players[next_turn-1].coin
     coin_enemy = players[prev_turn-1].coin
     name = players[next_turn-1].name
     genre = players[next_turn-1].genre
     try:
-        if genre is Genres.HUMAN:
-            input_player = int(input(
-                f"{name} it's your turn {coin} !" +
-                " Pick a column from 1 to 7: \n"))
-            input_player -= 1
-            time.sleep(0.3)
-            clear_console()
-            cprint(
-                f"\n{name} has picked the column: {input_player+1}!", "green")
-        elif genre is Genres.CPU:
-            input_player = get_input_cpu(coin, coin_enemy)
-            input_player -= 1
-            cprint(f"{name} is thinking...", "cyan")
-            time.sleep(4)
-            clear_console()
-            cprint(
-                f"{name} has picked the column: {input_player+1}!", "cyan")
-        else:
-            cprint("Error: This genre is not available." +
-                   " Please restart the game!", "red")
-            sys.exit()
-
-        if input_player in range(0, BOARD_COL):
-            time.sleep(0.3)
-            coin_row_to_insert = get_row_insert(input_player)
-        else:
-            cprint("The column number entered is not valid." +
-                   " Please try again!", "red")
-            render_board()
-            players_turn(next_turn, prev_turn)
-
-        if coin_row_to_insert != -1:
-            insert_value_matrix(coin_row_to_insert, input_player, coin)
-            if check_game_over(name, coin):
-                render_board()
-                time.sleep(0.3)
-                restart_end_game()
-            else:
-                move_forward(next_turn)
+        input_player = get_input(name, coin, coin_enemy, genre)
+        coin_row_insert = check_valid_move(input_player, next_turn, prev_turn)
+        if coin_row_insert != -1:
+            insert_value_matrix(coin_row_insert, input_player, coin)
+            check_board(name, coin, next_turn)
         else:
             if genre is Genres.HUMAN:
                 cprint("Sorry but the column is full!" +
@@ -199,7 +227,6 @@ def move_forward(prev_turn):
 
 def check_game_over(name, coin):
     """ Function that check if the game is ended """
-    game_over = False
     game_over = check_if_board_full(board) or \
         check_horizontal_winner(board, name, coin, BOARD_ROW) or \
         check_vertical_winner(board, name, coin, BOARD_COL) or \
@@ -224,7 +251,7 @@ def start_game():
         players[0].input_info()
         players[0].print_info()
         cprint("Great! The Board is ready!!!" +
-               " Roboto is your opponent! Let's Play!!!\n", "green")
+               " Roboto is your opponent! Let's Play!!!", "green")
         render_board()
         players_turn(1, 2)
     elif select_mode == "m":
@@ -234,7 +261,7 @@ def start_game():
             player.input_info()
             player.print_info()
         cprint("Great! The Board is ready!!!" +
-               " Let's Play!!!\n", "green")
+               " Let's Play!!!", "green")
         render_board()
         players_turn(1, 2)
     else:
