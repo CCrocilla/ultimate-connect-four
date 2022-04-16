@@ -46,6 +46,7 @@ def check_move_vertical(coin, coin_enemy, board, board_cols):
                     positions = (row + shift, col)
             if count_coin + count_empty == 4 and count_coin >= 2:
                 return positions
+
             if count_coin_enemy + count_empty == 4 and count_coin_enemy >= 2:
                 return positions
     return None

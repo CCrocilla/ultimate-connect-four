@@ -2,8 +2,7 @@
 from enum import Enum
 from termcolor import cprint
 from library.utilities import (clear_console,
-                               display_logo
-                               )
+                               display_logo)
 
 
 class Player:
