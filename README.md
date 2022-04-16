@@ -11,7 +11,7 @@
 #### Good luck to everyone and enjoy this amazing Connect 4! 
 
 
-<a href="" target="_blank" rel="noopener noreferrer"><img src="assets/images/logo-readme.webp" alt="Main Menu Connect 4 Game" width="1000px"/></a>
+<a href="https://ultimateconnect-four.herokuapp.com/" target="_blank" rel="noopener noreferrer"><img src="assets/images/logo-readme.webp" alt="Connect 4 Game" width="1000px"/></a>
 
 #### Click in the image above to access the Live Application or [click here!](https://ultimateconnect-four.herokuapp.com/)
 
