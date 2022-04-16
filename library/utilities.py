@@ -3,11 +3,9 @@ import os
 from termcolor import colored, cprint
 
 
-let_enter = colored("ENTER", 'cyan')
-
-
 def pause():
     """ Pause until the user press Enter """
+    let_enter = colored("ENTER", 'cyan')
     message_pause_home = f"Press the [{let_enter}] key to return Home...\n"
     input(message_pause_home)
 
